@@ -1,5 +1,6 @@
 package com.fireboss.heartlevels;
 
+import com.fireboss.heartlevels.init.InitItems;
 import com.fireboss.heartlevels.proxy.CommonProxy;
 
 import net.minecraftforge.common.config.Configuration;
@@ -31,7 +32,8 @@ public class HeartLevels {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-
+		InitItems.Create();
+		proxy.RenderItems();
 	}
 
 	@EventHandler
