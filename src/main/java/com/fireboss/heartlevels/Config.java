@@ -6,8 +6,10 @@ import net.minecraftforge.common.config.Property;
 public class Config {
 
 	private static String category = Configuration.CATEGORY_GENERAL;
-	private static String guiCategory = "gui_options";
+	private static String guiCategory = "gui";
+	private static String msgCategory = "messages";
 
+	// General
 	private static Property startHearts;
 	private static Property maxHearts;
 	private static Property levelRamp;
@@ -16,14 +18,22 @@ public class Config {
 	private static Property hardcoreMode;
 	private static Property multiplier;
 	private static Property enchantsEnabled;
+	private static Property armorEnchantID;
+	
+	// GUI
 	private static Property customGui;
 	private static Property minimalGui;
-	private static Property armorEnchantID;
 	private static Property guiKeyBinding;
+	
+	// Messages
+	private static Property onNewHeart;
 
 	public static Configuration config;
 
 	public static void SetupConfig() {
+		
+		// General Stuff
+		
 		startHearts = config.get(category, "Starting Hearts", 20);
 		startHearts.comment = "";
 
@@ -49,17 +59,24 @@ public class Config {
 		enchantsEnabled = config.get(category, "Enchantments Enabled", true);
 		enchantsEnabled.comment = "";
 		
+		armorEnchantID = config.get(category, "Armor Enchantments ID", 120);
+		armorEnchantID.comment = "";
+		
+		// GUI Stuff
+		
+		guiKeyBinding = config.get(guiCategory, "More Health Stats Key", "H");
+		guiKeyBinding.comment = "";
+		
 		customGui = config.get(guiCategory, "More Health HUD", true);
 		customGui.comment = "";
 		
 		minimalGui = config.get(guiCategory, "Minimal HUD", true);
 		minimalGui.comment = "";
 		
-		armorEnchantID = config.get(category, "Armor Enchantments ID", 120);
-		armorEnchantID.comment = "";
+		// Message Stuff
 		
-		guiKeyBinding = config.get(category, "More Health Stats Key", "H");
-		guiKeyBinding.comment = "";
+		onNewHeart = config.get(msgCategory, "On New Heart", "Your life has increased by one and is also now fully replenished!");
+		onNewHeart.comment = "";
 
 		if (config.hasChanged()) {
 			config.save();
