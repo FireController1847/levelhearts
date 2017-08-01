@@ -1,6 +1,7 @@
 package com.fireboss.heartlevels.init;
 
 import com.fireboss.heartlevels.items.Heart_Container;
+import com.fireboss.heartlevels.items.Heart_Piece;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -15,15 +16,18 @@ public class InitItems {
 
 	public static void Create() {
 		heart_container = new Heart_Container("heart_container");
+		heart_piece = new Heart_Piece("heart_piece");
 		Register();
 	}
 
 	public static void Register() {
 		GameRegistry.registerItem(heart_container);
+		GameRegistry.registerItem(heart_piece);
 	}
 
 	public static void Render() {
 		RenderItem(heart_container);
+		RenderItem(heart_piece);
 	}
 
 	public static void RenderItem(Item item) {
