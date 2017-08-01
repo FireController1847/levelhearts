@@ -2,6 +2,8 @@ package com.fireboss.heartlevels;
 
 import com.fireboss.heartlevels.proxy.CommonProxy;
 
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -9,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MCVERSIONS)
 public class HeartLevels {
@@ -21,7 +24,9 @@ public class HeartLevels {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-
+		Config.config = new Configuration(event.getSuggestedConfigurationFile());
+		Config.config.load();
+		Config.SetupConfig();
 	}
 
 	@EventHandler
@@ -32,6 +37,13 @@ public class HeartLevels {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
+	}
+	
+	@SubscribeEvent
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.modID.equals(Reference.MOD_ID)) {
+			Config.SetupConfig();
+		}
 	}
 
 }
