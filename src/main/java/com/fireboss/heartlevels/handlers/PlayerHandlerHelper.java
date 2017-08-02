@@ -6,13 +6,22 @@ import com.fireboss.heartlevels.Config;
 import com.fireboss.heartlevels.PlayerStats;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 
 public class PlayerHandlerHelper {
 
-	private static void updateHealth(EntityPlayer player, PlayerStats stats, NBTTagCompound tags) {
+	/**
+	 * Update a user's health.
+	 * 
+	 * @param player
+	 * @param stats
+	 * @param tags
+	 */
+	public static void updateHealth(EntityPlayer player, PlayerStats stats, NBTTagCompound tags) {
 		NBTTagCompound hlt = (NBTTagCompound) tags.getTag("HeartLevels 1"); // Heart Levels Tag
 
 		// Deals with cases of an existing user changing the config.
@@ -71,11 +80,15 @@ public class PlayerHandlerHelper {
 		hlt.setDouble("healthModifier", stats.healthmod);
 	}
 
-	/*
+	/**
 	 * Calculated the max health. Example: Let's start at 3 hearts. 6 + 2 + 2 + 2 =
 	 * 12; Default Health = 20; Modifier = 12-20 = -8; If the mod wants 22 max
 	 * health. If the default is 20, and another mod gave 2 health, it shouldn't be
 	 * doing 22-22, it should be doing 22-20.
+	 * 
+	 * @param player
+	 * @param stats
+	 * @return
 	 */
 	public static double calculateTotalHeartLevelsContrib(EntityPlayer player, PlayerStats stats) {
 		int rpgHealth = 0;
@@ -102,10 +115,143 @@ public class PlayerHandlerHelper {
 		return stats.start * 2 + rpgHealth + armorHealth + heartContainerHealth;
 	}
 
-	public static void loadPlayerData(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
-		if (!tags.hasKey("HeartLevels 1")) {
-			// THIS IS WHERE I LEFT OFF!!!!!
+	/**
+	 * Setup a player for the first time
+	 * 
+	 * @param player
+	 * @param tags
+	 * @param stats
+	 */
+	static void setupFirstTime(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
+		stats.start = Config.startHearts.getInt();
+		stats.LevelArray = Config.levelRamp.getIntList();
+
+		// 20 is default MC MaxHealth
+		double healthModifier = stats.start * 2 - 20;
+
+		// If config has starting hearts = 10, the healthModifier will be 0.
+		PlayerHandler.addHealthModifier(player, healthModifier);
+		stats.count = 0;
+		stats.previousLevel = player.experienceLevel;
+		try {
+			stats.healthmod = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+					.getModifier(PlayerHandler.HeartLevelsID).getAmount();
+		} catch (Exception e) {
 		}
+
+		// Saving is a bit different for a new player
+		NBTTagCompound hlt = (NBTTagCompound) tags.getTag("MoreHealth 1");
+		hlt.setInteger("start", stats.start);
+		if (Config.rpgMode.getBoolean()) {
+			hlt.setIntArray("LevelArray", stats.LevelArray);
+		} else {
+			hlt.setIntArray("LevelArray", new int[] { -1 });
+		}
+		hlt.setInteger("count", stats.count);
+		hlt.setInteger("previousLevel", stats.previousLevel);
+		hlt.setDouble("healthModifier", stats.healthmod);
+		hlt.setInteger("heartContainers", stats.heartContainers);
+		updateHealth(player, stats, tags);
+	}
+
+	/**
+	 * Update player data?
+	 * 
+	 * @param player
+	 */
+	static void updatePlayerData(EntityPlayer player) {
+		PlayerStats stats = PlayerStats.getPlayerStats(player.getCommandSenderEntity().getName());
+		double healthModifier = stats.healthmod;
+		PlayerHandler.addHealthModifier(player, healthModifier);
+	}
+
+	/**
+	 * Updates the mod's data in NBT
+	 * 
+	 * @param player
+	 * @param loggedOut
+	 */
+	public static void savePlayerData(EntityPlayer player, boolean loggedOut) {
+		PlayerStats stats = PlayerStats.getPlayerStats(player.getCommandSenderEntity().getName());
+		if (stats == null) {
+			return;
+		}
+		// Fixes issues in Singleplayer, as mc.thePlayer isn't actually the
+		// EntityPlayer!
+		EntityPlayer realPlayer = stats.player;
+		// This has the same name, but not same NBTTagCompound.
+		NBTTagCompound entityPlayerTag;
+		if (realPlayer != null) {
+			entityPlayerTag = realPlayer.getEntityData();
+		} else {
+			entityPlayerTag = player.getEntityData();
+		}
+		NBTTagCompound hlt = (NBTTagCompound) entityPlayerTag.getTag("HeartLevels 1");
+		hlt.setInteger("start", stats.start);
+		if (Config.rpgMode.getBoolean()) {
+			hlt.setIntArray("LevelArray", stats.LevelArray);
+		} else {
+			hlt.setIntArray("LevelArray", new int[] { -1 });
+		}
+		hlt.setInteger("count", stats.count);
+		hlt.setInteger("previousLevel", stats.previousLevel);
+		hlt.setDouble("healthModifier", stats.healthmod);
+		if (!loggedOut) {
+			return;
+		}
+		// Remove health bonus from armour. On log in, stats.oldArmorSet will be an
+		// array of nulls even if armour is equipped. Thus, there will be extra hearts
+		// added (an extra set based on armour hearts)
+		double currentMaxHealthMod = 0;
+		try {
+			currentMaxHealthMod = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+					.getModifier(PlayerHandler.HeartLevelsID).getAmount();
+		} catch (Exception e) {
+		}
+		for (int i = 0; i < 4; i++) {
+			ItemStack currArmor = stats.oldArmourSet[i];
+			int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currArmor);
+			if (extraHearts > 0) {
+				int extraHealth = extraHearts * 2;
+				currentMaxHealthMod -= extraHealth;
+			}
+		}
+		hlt.setDouble("healthModifier", currentMaxHealthMod);
+		hlt.setFloat("loggedOutHealth", player.getHealth());
+		hlt.setInteger("heartContainers", stats.heartContainers);
+		PlayerHandler.playerStats.remove(player.getCommandSenderEntity().getName());
+	}
+
+	/**
+	 * Loads a player's data
+	 * 
+	 * @param player
+	 * @param tags
+	 * @param stats
+	 */
+	public static void loadPlayerData(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
+		// On a new user
+		if (!tags.hasKey("HeartLevels 1")) {
+			tags.setTag("HeartLevels 1", new NBTTagCompound());
+			NBTTagCompound temp = (NBTTagCompound) tags.getTag("MoreHealth 1");
+
+			// Setup for a new player
+			setupFirstTime(player, tags, stats);
+		}
+
+		// Tags can only be stored with settag, and are stored as NBTBase. It must be
+		// cast before using.
+		NBTTagCompound hlt = (NBTTagCompound) tags.getTag("HeartLevels 1");
+
+		// Save start and level array.
+		stats.start = hlt.getInteger("start");
+		stats.LevelArray = hlt.getIntArray("LevelArray");
+
+		stats.count = hlt.getInteger("count");
+		stats.previousLevel = hlt.getInteger("previousLevel");
+		stats.healthmod = hlt.getDouble("healthModifier");
+		stats.loggedOutHealth = hlt.getFloat("loggedOutHealth");
+		stats.heartContainers = hlt.getInteger("heartContainers");
 	}
 
 }
