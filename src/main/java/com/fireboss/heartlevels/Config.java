@@ -10,23 +10,23 @@ public class Config {
 	private static String msgCategory = "messages";
 
 	// General
-	private static Property startHearts;
-	private static Property maxHearts;
-	private static Property levelRamp;
-	private static Property heartItems;
-	private static Property rpgMode;
-	private static Property hardcoreMode;
-	private static Property multiplier;
-	private static Property enchantsEnabled;
-	private static Property armorEnchantID;
+	public static Property startHearts;
+	public static Property maxHearts;
+	public static Property levelRamp;
+	public static Property heartItems;
+	public static Property rpgMode;
+	public static Property hardcoreMode;
+	public static Property multiplier;
+	public static Property enchantsEnabled;
+	public static Property armorEnchantID;
 	
 	// GUI
-	private static Property customGui;
-	private static Property minimalGui;
-	private static Property guiKeyBinding;
+	public static Property customGui;
+	public static Property minimalGui;
+	public static Property guiKeyBinding;
 	
 	// Messages
-	private static Property onNewHeart;
+	public static Property onNewHeart;
 
 	public static Configuration config;
 
