@@ -140,7 +140,7 @@ public class PlayerHandlerHelper {
 		}
 
 		// Saving is a bit different for a new player
-		NBTTagCompound hlt = (NBTTagCompound) tags.getTag("MoreHealth 1");
+		NBTTagCompound hlt = (NBTTagCompound) tags.getTag("HeartLevels 1");
 		hlt.setInteger("start", stats.start);
 		if (Config.rpgMode.getBoolean()) {
 			hlt.setIntArray("LevelArray", stats.LevelArray);
