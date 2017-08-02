@@ -3,11 +3,13 @@ package com.fireboss.heartlevels;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fireboss.heartlevels.enchantments.ArmorHealthEnchantment;
 import com.fireboss.heartlevels.handlers.PlayerHandler;
 import com.fireboss.heartlevels.init.InitChestLoot;
 import com.fireboss.heartlevels.init.InitItems;
 import com.fireboss.heartlevels.proxy.CommonProxy;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -32,8 +34,10 @@ public class HeartLevels {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
 	public static CommonProxy proxy;
 
+	public static int[] LevelRampInt;
+	public static Enchantment armorEnchantment;
 	public static AttributeModifier healthMod;
-	
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		Config.config = new Configuration(event.getSuggestedConfigurationFile());
@@ -48,8 +52,18 @@ public class HeartLevels {
 		if (Config.heartItems.getBoolean()) {
 			InitChestLoot.AddChestLoot();
 		}
+		if (!Config.rpgMode.getBoolean()) {
+			LevelRampInt = new int[1];
+			LevelRampInt[0] = -1; // Stops RPG
+		} else {
+			LevelRampInt = Config.levelRamp.getIntList();
+		}
+		// What happens to users who had enchanted items then turn off enchantments?
+		if (Config.enchantsEnabled.getBoolean()) {
+			armorEnchantment = new ArmorHealthEnchantment(Config.armorEnchantID.getInt(), 4);
+		}
 	}
-	
+
 	private static Object playerTracker;
 
 	@EventHandler

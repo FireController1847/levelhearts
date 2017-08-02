@@ -48,7 +48,7 @@ public class PlayerHandler {
 		// Start gets set to default config. If the user changes it, heart values need
 		// to be recalculated.
 		if (stats.start != Config.startHearts.getInt()
-				|| !Arrays.equals(stats.LevelArray, Config.levelRamp.getIntList())) {
+				|| !Arrays.equals(stats.LevelArray, HeartLevels.LevelRampInt)) {
 			PlayerHandlerHelper.updateHealth(event.player, stats, tags);
 		}
 

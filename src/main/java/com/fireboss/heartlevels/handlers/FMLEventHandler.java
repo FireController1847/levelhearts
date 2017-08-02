@@ -1,6 +1,7 @@
 package com.fireboss.heartlevels.handlers;
 
 import com.fireboss.heartlevels.Config;
+import com.fireboss.heartlevels.HeartLevels;
 import com.fireboss.heartlevels.PlayerStats;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -171,8 +172,8 @@ public class FMLEventHandler {
 			 * LevelRampInt[4] = 40. He still gets one heart. The while loop iterates once
 			 * again, but now at 50 the condition is not satisfied
 			 */
-			while (stats.count < Config.levelRamp.getIntList().length
-					&& player.experienceLevel >= Config.levelRamp.getIntList()[stats.count]) {
+			while (stats.count < HeartLevels.LevelRampInt.length
+					&& player.experienceLevel >= HeartLevels.LevelRampInt[stats.count]) {
 				player.addChatComponentMessage(
 						new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
 				double updatedModifier = 0;

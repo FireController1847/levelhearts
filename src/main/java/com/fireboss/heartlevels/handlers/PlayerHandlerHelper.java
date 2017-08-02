@@ -3,6 +3,7 @@ package com.fireboss.heartlevels.handlers;
 import java.util.Arrays;
 
 import com.fireboss.heartlevels.Config;
+import com.fireboss.heartlevels.HeartLevels;
 import com.fireboss.heartlevels.PlayerStats;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -32,8 +33,8 @@ public class PlayerHandlerHelper {
 		// When users start up the game, LevelArray gets reset (it's hard to save this
 		// variable for now),
 		// but nothing should really change.
-		if (!Arrays.equals(stats.LevelArray, Config.levelRamp.getIntList())) {
-			stats.LevelArray = Config.levelRamp.getIntList();
+		if (!Arrays.equals(stats.LevelArray, HeartLevels.LevelRampInt)) {
+			stats.LevelArray = HeartLevels.LevelRampInt;
 			player.addChatComponentMessage(new ChatComponentText("Level Ramp successfully changed!"));
 			hlt.setIntArray("LevelArray", stats.LevelArray);
 		}
@@ -93,7 +94,7 @@ public class PlayerHandlerHelper {
 	public static double calculateTotalHeartLevelsContrib(EntityPlayer player, PlayerStats stats) {
 		int rpgHealth = 0;
 		int maxHearts = Config.maxHearts.getInt();
-		int[] levelRamp = Config.levelRamp.getIntList();
+		int[] levelRamp = HeartLevels.LevelRampInt;
 		for (int i = 0; i < levelRamp.length; i++) {
 			if (player.experienceLevel >= levelRamp[i]) {
 				rpgHealth += 2;
@@ -124,7 +125,7 @@ public class PlayerHandlerHelper {
 	 */
 	static void setupFirstTime(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
 		stats.start = Config.startHearts.getInt();
-		stats.LevelArray = Config.levelRamp.getIntList();
+		stats.LevelArray = HeartLevels.LevelRampInt;
 
 		// 20 is default MC MaxHealth
 		double healthModifier = stats.start * 2 - 20;
