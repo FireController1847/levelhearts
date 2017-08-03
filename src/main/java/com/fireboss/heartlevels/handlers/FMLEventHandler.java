@@ -163,6 +163,9 @@ public class FMLEventHandler {
 			return;
 		}
 		if (levelIncreased(player, stats)) {
+			if (Config.debug.getBoolean()) {
+				HeartLevels.logger.info("The user's level has increased!");
+			}
 			/*
 			 * While the player is still able to earn hearts (based on the config file's
 			 * level ramp)-- aka stats.count hasn't reached the end of the ramp array AND
@@ -175,6 +178,9 @@ public class FMLEventHandler {
 			 */
 			while (stats.count < HeartLevels.LevelRampInt.length
 					&& player.experienceLevel >= HeartLevels.LevelRampInt[stats.count]) {
+				if (Config.debug.getBoolean()) {
+					HeartLevels.logger.info("EXP matches next level ramp! Upping player level...");
+				}
 				player.addChatComponentMessage(
 						new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
 				double updatedModifier = 2;
@@ -187,6 +193,9 @@ public class FMLEventHandler {
 				stats.healthmod = updatedModifier;
 				stats.count++;
 				player.setHealth(player.getMaxHealth());
+				if (Config.debug.getBoolean()) {
+					HeartLevels.logger.info("Player's hearts have been updated!");
+				}
 			}
 		}
 	}

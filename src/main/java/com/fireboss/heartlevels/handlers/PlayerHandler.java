@@ -75,6 +75,7 @@ public class PlayerHandler {
 
 	/**
 	 * On the player logging out. - Not working for client log out, only server.
+	 * Strike that, it seems to be working for clients now. Must do more testing.
 	 * Need a workaround for singleplayer.
 	 * 
 	 * @param event
@@ -82,18 +83,6 @@ public class PlayerHandler {
 	@SubscribeEvent
 	public void onPlayerLogOut(PlayerLoggedOutEvent event) {
 		PlayerHandlerHelper.savePlayerData(event.player, true);
-	}
-
-	/**
-	 * On the server stopping. Fired at the client when a client disconnects.
-	 * 
-	 * @param event
-	 */
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onServerStop(ClientDisconnectionFromServerEvent event) {
-		// Called only if you go into a SP world, then quit, world is unloaded.
-		PlayerHandlerHelper.savePlayerData(FMLClientHandler.instance().getClient().thePlayer, true);
 	}
 
 	/**

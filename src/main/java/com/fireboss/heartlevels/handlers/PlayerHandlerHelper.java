@@ -130,6 +130,10 @@ public class PlayerHandlerHelper {
 	 * @param stats
 	 */
 	static void setupFirstTime(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("Player not found!");
+			HeartLevels.logger.info("Initiating a new player...");
+		}
 		stats.start = Config.startHearts.getInt();
 		stats.LevelArray = HeartLevels.LevelRampInt;
 
@@ -159,6 +163,9 @@ public class PlayerHandlerHelper {
 		hlt.setDouble("healthModifier", stats.healthmod);
 		hlt.setInteger("heartContainers", stats.heartContainers);
 		updateHealth(player, stats, tags);
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("New player initated successfully!");
+		}
 	}
 
 	/**
@@ -179,6 +186,9 @@ public class PlayerHandlerHelper {
 	 * @param loggedOut
 	 */
 	public static void savePlayerData(EntityPlayer player, boolean loggedOut) {
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("Saving player data...");
+		}
 		PlayerStats stats = PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
 		if (stats == null) {
 			return;
@@ -227,6 +237,9 @@ public class PlayerHandlerHelper {
 		hlt.setFloat("loggedOutHealth", player.getHealth());
 		hlt.setInteger("heartContainers", stats.heartContainers);
 		PlayerHandler.playerStats.remove(player.getUUID(player.getGameProfile()).toString());
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("Player data saved successfully!");
+		}
 	}
 
 	/**
@@ -237,6 +250,9 @@ public class PlayerHandlerHelper {
 	 * @param stats
 	 */
 	public static void loadPlayerData(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("Loading player data...");
+		}
 		// On a new user
 		if (!tags.hasKey("HeartLevels 1")) {
 			tags.setTag("HeartLevels 1", new NBTTagCompound());
@@ -259,6 +275,9 @@ public class PlayerHandlerHelper {
 		stats.healthmod = hlt.getDouble("healthModifier");
 		stats.loggedOutHealth = hlt.getFloat("loggedOutHealth");
 		stats.heartContainers = hlt.getInteger("heartContainers");
+		if (Config.debug.getBoolean()) {
+			HeartLevels.logger.info("Player data loaded successfully!");
+		}
 	}
 
 }

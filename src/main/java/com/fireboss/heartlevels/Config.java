@@ -17,6 +17,7 @@ public class Config {
 	public static Property multiplier;
 	public static Property enchantsEnabled;
 	public static Property armorEnchantID;
+	public static Property debug;
 	
 	// Health
 	public static Property startHearts;
@@ -38,6 +39,9 @@ public class Config {
 	public static void SetupConfig() {
 
 		// General Stuff
+		
+		debug = config.get(category, "Debug Mode", false);
+		debug.comment = "Set to true to get a bunch of extra output in console. Please enable this when reporting bugs.";
 
 		heartItems = config.get(category, "Heart Container And Pieces", true);
 		heartItems.comment = "Set to false to disable all heart containers from even registering into game.";
