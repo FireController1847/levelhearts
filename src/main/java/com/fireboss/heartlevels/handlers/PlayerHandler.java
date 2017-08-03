@@ -131,7 +131,7 @@ public class PlayerHandler {
 		if (Config.hardcoreMode.getBoolean()) {
 			stats.count = 0; // Resets progress
 			double baseHearts = event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
-			healthModifier = (stats.start * 2) - baseHearts;
+			healthModifier = (stats.start) - baseHearts; // OLD: stats.start * 2
 			addHealthModifier(event.player, healthModifier);
 		}
 		// Set health

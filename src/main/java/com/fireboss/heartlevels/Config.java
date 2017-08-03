@@ -13,6 +13,7 @@ public class Config {
 	public static Property startHearts;
 	public static Property maxHearts;
 	public static Property levelRamp;
+	public static Property heartGain;
 	public static Property heartItems;
 	public static Property rpgMode;
 	public static Property hardcoreMode;
@@ -35,16 +36,19 @@ public class Config {
 		// General Stuff
 
 		startHearts = config.get(category, "Starting Hearts", 20);
-		startHearts.comment = "The amount of hearts (in half hearts) the user will start with.";
+		startHearts.comment = "The amount of half-hearts the user will start with. Default Minecraft hearts is 20 (or 10 full hearts).";
 
 		maxHearts = config.get(category, "Maximum Hearts", -1);
-		maxHearts.comment = "The maximum amount of hearts (in half hearts) a user is allowed to have. Set to -1 to disable.";
+		maxHearts.comment = "The maximum amount of half-hearts a user is allowed to have. Set to -1 to disable.";
 
 		levelRamp = config.get(category, "Level Ramp",
 				new int[] { 1, 5, 10, 15, 20, 25, 30, 34, 38, 42, 46, 50, 53, 56, 59, 62, 64, 66, 68, 70, 75, 80, 85,
 						90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260,
 						270, 280, 290, 300, 310, 320, 330, 340, 350, 360, 370, 380, 390, 400, 420, 440, 460, 500 });
 		levelRamp.comment = "The levels in which the user 'levels up' (gains a heart).";
+		
+		heartGain = config.get(category, "Heart Gain", 2);
+		heartGain.comment = "When leveling up, how many half-hearts does the user gets?";
 
 		heartItems = config.get(category, "Heart Container And Pieces", true);
 		heartItems.comment = "Set to false to disable all heart containers from even registering into game.";
@@ -56,7 +60,7 @@ public class Config {
 		hardcoreMode.comment = "Resets a user's heart level to starting hearts on death.";
 
 		multiplier = config.get(category, "Heart Item Multiplier", 10);
-		multiplier.comment = "The multiplier on how many hears the heart container gives you.";
+		multiplier.comment = "The multiplier on how often you'll find heart containers in dungeons.";
 
 		enchantsEnabled = config.get(category, "Enchantments Enabled", true);
 		enchantsEnabled.comment = "Set to false to disable the Hearts enchantment on Armor";

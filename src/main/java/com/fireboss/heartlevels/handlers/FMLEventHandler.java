@@ -80,7 +80,7 @@ public class FMLEventHandler {
 				int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
 				// 1 heart = 2 health (because reasons)
 				if (extraHearts > 0) {
-					int extraHealth = extraHearts * 2;
+					int extraHealth = extraHearts; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod - extraHealth);
 					player.addChatComponentMessage(new ChatComponentText(
 							"Removing the armor causes the extra " + extraHearts + " enchanted hearts to fade away."));
@@ -90,7 +90,7 @@ public class FMLEventHandler {
 				// Armour was equipped (with nothing before)
 				int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
 				if (extraHearts > 0) {
-					int extraHealth = extraHearts * 2;
+					int extraHealth = extraHearts; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod + extraHealth); // changes the health
 																								// modifier to this new
 																								// one
@@ -105,9 +105,9 @@ public class FMLEventHandler {
 				// Do nothing, the armour hasn't changed.
 			} else {
 				// Both are not null, and they are not equal to each other.
-				int oldHealth = 2 * EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
-				int newHealth = 2
-						* EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
+				// Removed 2* because of half hearts are now accepted on both oldHealth and newHealth
+				int oldHealth = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
+				int newHealth = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
 				int healthChange = newHealth - oldHealth;
 				PlayerHandler.addHealthModifier(player, currentMaxHealthMod + healthChange);
 				// Adds the change in health (can be positive and negative)
@@ -157,7 +157,7 @@ public class FMLEventHandler {
 	 */
 	private void calculateHeartChange(EntityPlayer player, PlayerStats stats) {
 		int maxHearts = Config.maxHearts.getInt();
-		if (maxHearts != -1 && maxHearts != 0 && player.getMaxHealth() + 2 > maxHearts * 2) {
+		if (maxHearts != -1 && maxHearts != 0 && player.getMaxHealth() + 2 > maxHearts) { // OLD: maxHearts * 2
 			// Player gets more health through heart container system, so RPG doesn't exceed
 			// the cap.
 			return;
@@ -180,7 +180,7 @@ public class FMLEventHandler {
 				double updatedModifier = 2;
 				try {
 					updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-							.getModifier(PlayerHandler.HeartLevelsID).getAmount() + 2.0;
+							.getModifier(PlayerHandler.HeartLevelsID).getAmount() + Config.heartGain.getInt();
 				} catch (Exception e) {
 				}
 				PlayerHandler.addHealthModifier(player, updatedModifier);

@@ -68,31 +68,32 @@ public class HeartLevelsHUD extends Gui {
 		if (event == null || event.type == null)
 			return;
 		if (event.type.equals(RenderGameOverlayEvent.ElementType.ARMOR)) {
-			if (Config.minimalGui.getBoolean())
+			if (Config.minimalGui.getBoolean()) {
 				GuiIngameForge.left_height += 10;
-		}
-		if (Config.customGui.getBoolean() && !Config.minimalGui.getBoolean()) {
-			event.setCanceled(true);
-			mc.mcProfiler.startSection("armor");
-			ScaledResolution res = new ScaledResolution(mc);
-			int width = res.getScaledWidth();
-			int height = res.getScaledHeight();
-
-			// Armour shifted right 100 units (most likely pixels)
-			int left = width / 2 - 91 + 100;
-			int top = height - 49;
-			int level = ForgeHooks.getTotalArmorValue(mc.thePlayer);
-			for (int i = 1; level > 0 && i < 20; i += 2) {
-				if (i < level) {
-					drawTexturedModalRect(left, top, 34, 9, 9, 9);
-				} else if (i == level) {
-					drawTexturedModalRect(left, top, 25, 9, 9, 9);
-				} else if (i > level) {
-					drawTexturedModalRect(left, top, 16, 9, 9, 9);
-				}
-				left += 8;
 			}
-			mc.mcProfiler.endSection();
+			if (Config.customGui.getBoolean() && !Config.minimalGui.getBoolean()) {
+				event.setCanceled(true);
+				mc.mcProfiler.startSection("armor");
+				ScaledResolution res = new ScaledResolution(mc);
+				int width = res.getScaledWidth();
+				int height = res.getScaledHeight();
+
+				// Armour shifted right 100 units (most likely pixels)
+				int left = width / 2 - 91 + 100;
+				int top = height - 49;
+				int level = ForgeHooks.getTotalArmorValue(mc.thePlayer);
+				for (int i = 1; level > 0 && i < 20; i += 2) {
+					if (i < level) {
+						drawTexturedModalRect(left, top, 34, 9, 9, 9);
+					} else if (i == level) {
+						drawTexturedModalRect(left, top, 25, 9, 9, 9);
+					} else if (i > level) {
+						drawTexturedModalRect(left, top, 16, 9, 9, 9);
+					}
+					left += 8;
+				}
+				mc.mcProfiler.endSection();
+			}
 		}
 	}
 

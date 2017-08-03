@@ -45,7 +45,7 @@ public class Heart_Container extends Item {
 		double updatedModifier = 2;
 		try {
 			updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-					.getModifier(PlayerHandler.HeartLevelsID).getAmount() + 2.0;
+					.getModifier(PlayerHandler.HeartLevelsID).getAmount() + Config.heartGain.getInt();
 		} catch (Exception e) {
 		}
 		PlayerHandler.addHealthModifier(player, updatedModifier);

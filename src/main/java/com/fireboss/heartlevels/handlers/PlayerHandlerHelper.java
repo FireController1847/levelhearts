@@ -98,16 +98,16 @@ public class PlayerHandlerHelper {
 				break;
 			}
 		}
-		if (maxHearts != -1 && maxHearts != 0 && rpgHealth > maxHearts * 2) {
-			rpgHealth = maxHearts * 2;
+		if (maxHearts != -1 && maxHearts != 0 && rpgHealth > maxHearts) { // OLD: maxHearts * 2
+			rpgHealth = maxHearts; // OLD: maxHearts * 2
 		}
 		int extraHearts = 0;
 		for (int i = 0; i < stats.oldArmourSet.length; i++) {
 			extraHearts += EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), stats.oldArmourSet[i]);
 		}
-		double armorHealth = extraHearts * 2;
-		double heartContainerHealth = stats.heartContainers * 2;
-		return stats.start * 2 + rpgHealth + armorHealth + heartContainerHealth;
+		double armorHealth = extraHearts; // OLD: extraHearts * 2
+		double heartContainerHealth = stats.heartContainers; // OLD: heartContainers * 2
+		return stats.start + rpgHealth + armorHealth + heartContainerHealth; // OLD: start * 2
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class PlayerHandlerHelper {
 	 */
 	public static double calcDefaultHeartsNoHC(EntityPlayer player, PlayerStats stats) {
 		double health = calcDefaultHearts(player, stats);
-		health -= stats.heartContainers * 2;
+		health -= stats.heartContainers; // OLD: heartContainers * 2
 		return health;
 	}
 
@@ -134,7 +134,7 @@ public class PlayerHandlerHelper {
 		stats.LevelArray = HeartLevels.LevelRampInt;
 
 		// 20 is default MC MaxHealth
-		double healthModifier = stats.start * 2 - 20;
+		double healthModifier = stats.start - 20; // OLD: start * 2 -20
 
 		// If config has starting hearts = 10, the healthModifier will be 0.
 		PlayerHandler.addHealthModifier(player, healthModifier);
@@ -219,7 +219,7 @@ public class PlayerHandlerHelper {
 			ItemStack currArmor = stats.oldArmourSet[i];
 			int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currArmor);
 			if (extraHearts > 0) {
-				int extraHealth = extraHearts * 2;
+				int extraHealth = extraHearts; // OLD: extraHearts * 2
 				currentMaxHealthMod -= extraHealth;
 			}
 		}
