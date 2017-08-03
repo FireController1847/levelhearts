@@ -34,11 +34,11 @@ public class Config {
 
 		// General Stuff
 
-		startHearts = config.get(category, "Starting Hearts", 10);
-		startHearts.comment = "The amount of hearts the user will start with.";
+		startHearts = config.get(category, "Starting Hearts", 20);
+		startHearts.comment = "The amount of hearts (in half hearts) the user will start with.";
 
 		maxHearts = config.get(category, "Maximum Hearts", -1);
-		maxHearts.comment = "The maximum amount of hearts a user is allowed to have. Set to -1 to disable.";
+		maxHearts.comment = "The maximum amount of hearts (in half hearts) a user is allowed to have. Set to -1 to disable.";
 
 		levelRamp = config.get(category, "Level Ramp",
 				new int[] { 1, 5, 10, 15, 20, 25, 30, 34, 38, 42, 46, 50, 53, 56, 59, 62, 64, 66, 68, 70, 75, 80, 85,
@@ -66,14 +66,15 @@ public class Config {
 
 		// GUI Stuff
 
-		guiKeyBinding = config.get(guiCategory, "More Health Stats Key", "H");
-		guiKeyBinding.comment = "";
+		guiKeyBinding = config.get(guiCategory, "Heart Levels Stats Key", "H");
+		guiKeyBinding.comment = "The key you'll press to get the Heart Levels menu.";
 
-		customGui = config.get(guiCategory, "More Health HUD", true);
-		customGui.comment = "";
+		customGui = config.get(guiCategory, "Heart Levels HUD", true);
+		customGui.comment = "Disabling will only show 10 full hearts even if you have 20 full hearts.";
 
-		minimalGui = config.get(guiCategory, "Minimal HUD", true);
-		minimalGui.comment = "";
+		minimalGui = config.get(guiCategory, "Minimal HUD", false);
+		minimalGui.comment = "A number shows up next to the full hearts saying how many hearts you have by tens."
+				+ " So if you have 25 full hearts, 5 hearts will show on the HUD and a 2 will show up next to it.";
 
 		// Message Stuff
 
