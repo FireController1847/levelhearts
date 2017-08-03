@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "modid": "heartlevels",
+  "name": "Heart Levels",
+  "description": "A remake of More Health Enchanted! :D",
+  "version": "1.0.0 BETA",
+  "mcversion": "$[1.8.9]",
+  "url": "https://minecraft.curseforge.com/projects/heart-levels",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["FireController#1847", "073TheBoss"],
+  "credits": "NoHero for making the original More Hearts Enchanted",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
