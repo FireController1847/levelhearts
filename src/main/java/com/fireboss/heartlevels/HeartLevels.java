@@ -3,6 +3,7 @@ package com.fireboss.heartlevels;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fireboss.heartlevels.commands.HeartLevelCommands;
 import com.fireboss.heartlevels.enchantments.ArmorHealthEnchantment;
 import com.fireboss.heartlevels.handlers.FMLEventHandler;
 import com.fireboss.heartlevels.handlers.ForgeEventHandler;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MCVERSIONS)
@@ -74,6 +76,11 @@ public class HeartLevels {
 	public void postInit(FMLPostInitializationEvent event) {
 		playerTracker = new PlayerHandler();
 		MinecraftForge.EVENT_BUS.register(playerTracker);
+	}
+
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event) {
+		event.registerServerCommand(new HeartLevelCommands());
 	}
 
 	@SubscribeEvent

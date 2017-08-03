@@ -115,6 +115,36 @@ public class PlayerHandlerHelper {
 		double heartContainerHealth = stats.heartContainers * 2;
 		return stats.start * 2 + rpgHealth + armorHealth + heartContainerHealth;
 	}
+	
+	/**
+	 * Used to calculate the default heart level without heart containers. 
+	 * @param player
+	 * @param stats
+	 * @return
+	 */
+	public static double calculateTotalHeartLevelsContribNoHeartContainers(EntityPlayer player, PlayerStats stats) {
+		int rpgHealth = 0;
+		int maxHearts = Config.maxHearts.getInt();
+		int[] levelRamp = HeartLevels.LevelRampInt;
+		for (int i = 0; i < levelRamp.length; i++) {
+			if (player.experienceLevel >= levelRamp[i]) {
+				rpgHealth += 2;
+			} else {
+				break;
+			}
+		}
+		if (maxHearts != -1 && maxHearts != 0) {
+			if (rpgHealth > maxHearts * 2) {
+				rpgHealth = maxHearts * 2;
+			}
+		}
+		int extraHearts = 0;
+		for (int i = 0; i < stats.oldArmourSet.length; i++) {
+			extraHearts += EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), stats.oldArmourSet[i]);
+		}
+		double armorHealth = extraHearts * 2;
+		return stats.start * 2 + rpgHealth + armorHealth;
+	}
 
 	/**
 	 * Setup a player for the first time
