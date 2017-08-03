@@ -7,6 +7,7 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -30,6 +31,11 @@ public class ForgeEventHandler {
 				}
 			}
 		}
+	}
+
+	@SubscribeEvent()
+	public void onPlayerPickupXP(PlayerPickupXpEvent e) {
+		e.orb.xpValue *= Config.expMultiplier.getDouble();
 	}
 
 }
