@@ -1,11 +1,15 @@
 package com.fireboss.heartlevels.gui;
 
+import java.awt.Color;
+
 import com.fireboss.heartlevels.Config;
 import com.fireboss.heartlevels.HeartLevels;
 import com.fireboss.heartlevels.PlayerStats;
 import com.fireboss.heartlevels.handlers.PlayerHandlerHelper;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,17 +28,18 @@ public class HeartLevelsGui extends GuiScreen {
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
 		PlayerStats stats = PlayerStats.getPlayerStats(mc.thePlayer.getUUID(mc.thePlayer.getGameProfile()).toString());
-		drawCenteredString(fontRendererObj, "More Health Stats", mc.displayWidth / 4, 2, 0xE0E0E0);
+		ScaledResolution sr = new ScaledResolution(mc);
+		drawCenteredString(fontRendererObj, "More Health Stats", sr.getScaledWidth()/2, sr.getScaledHeight()/2-32, 0xE0E0E0);
 		drawCenteredString(fontRendererObj, "Current Hearts: " + (int) mc.thePlayer.getHealth() / 2.0,
-				mc.displayWidth / 4, 12, 0xE0E0E0);
+				sr.getScaledWidth()/2, sr.getScaledHeight()/2-22, 0xE0E0E0);
 		drawCenteredString(fontRendererObj, "Max Hearts: " + (int) mc.thePlayer.getMaxHealth() / 2.0,
-				mc.displayWidth / 4, 22, 0xE0E0E0);
-		drawCenteredString(fontRendererObj, "Hearts from RPG: " + stats.count, mc.displayWidth / 4, 32, 0xE0E0E0);
+				sr.getScaledWidth()/2, sr.getScaledHeight()/2-12, 0xE0E0E0);
+		drawCenteredString(fontRendererObj, "Hearts from RPG: " + stats.count, sr.getScaledWidth()/2, sr.getScaledHeight()/2-2, 0xE0E0E0);
 		int extraHearts = 0;
 		for (int i = 0; i < stats.oldArmourSet.length; i++) {
 			extraHearts += EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), stats.oldArmourSet[i]);
 		}
-		drawCenteredString(fontRendererObj, "Hearts from Enchantment: " + (extraHearts), mc.displayWidth / 4, 42,
+		drawCenteredString(fontRendererObj, "Hearts from Enchantment: " + (extraHearts), sr.getScaledWidth()/2, sr.getScaledHeight()/2+8,
 				0xE0E0E0);
 		double health = PlayerHandlerHelper.calculateTotalHeartLevelsContrib(mc.thePlayer, stats);
 		double modAmount = Math.abs(20 + HeartLevels.healthMod.getAmount());
@@ -44,11 +49,11 @@ public class HeartLevelsGui extends GuiScreen {
 			heartsFromContainers += modAmount - health;
 		}
 		drawCenteredString(fontRendererObj, "Hearts from Heart Containers: " + (heartsFromContainers),
-				mc.displayWidth / 4, 52, 0xE0E0E0);
+				sr.getScaledWidth()/2, sr.getScaledHeight()/2+18, 0xE0E0E0);
 		IAttributeInstance aint = mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth);
 		aint.removeModifier(HeartLevels.healthMod);
 		drawCenteredString(fontRendererObj, "Health from other sources: " + (int) (mc.thePlayer.getMaxHealth() - 20),
-				mc.displayWidth / 4, 62, 0xE0E0E0);
+				sr.getScaledWidth()/2, sr.getScaledHeight()/2+28, 0xE0E0E0);
 		aint.applyModifier(HeartLevels.healthMod);
 	}
 

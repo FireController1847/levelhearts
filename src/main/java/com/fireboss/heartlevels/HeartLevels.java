@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.fireboss.heartlevels.commands.HeartLevelCommands;
 import com.fireboss.heartlevels.enchantments.ArmorHealthEnchantment;
+import com.fireboss.heartlevels.gui.HeartLevelsGui;
+import com.fireboss.heartlevels.gui.HeartLevelsGuiHandler;
 import com.fireboss.heartlevels.handlers.FMLEventHandler;
 import com.fireboss.heartlevels.handlers.ForgeEventHandler;
 import com.fireboss.heartlevels.handlers.PlayerHandler;
@@ -27,6 +29,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.MCVERSIONS)
 public class HeartLevels {
@@ -71,6 +77,7 @@ public class HeartLevels {
 			armorEnchantment = new ArmorHealthEnchantment(Config.armorEnchantID.getInt(), 4);
 		}
 		proxy.init();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new HeartLevelsGuiHandler());
 	}
 
 	private static Object playerTracker;
@@ -85,6 +92,15 @@ public class HeartLevels {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new HeartLevelCommands());
+	}
+
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onKeyEvent(KeyInputEvent event) {
+		if (HeartLevelsGui.keyBinding.isPressed()) {
+			FMLClientHandler.instance().getClient().thePlayer.openGui(instance, HeartLevelsGui.id,
+					FMLClientHandler.instance().getClient().theWorld, 0, 0, 0);
+		}
 	}
 
 	@SubscribeEvent
