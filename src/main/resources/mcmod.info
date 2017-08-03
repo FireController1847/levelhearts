@@ -4,7 +4,7 @@
   "name": "Heart Levels",
   "description": "A remake of More Health Enchanted! :D",
   "version": "1.0.0 BETA",
-  "mcversion": "$[1.8.9]",
+  "mcversion": "[1.8.9]",
   "url": "https://minecraft.curseforge.com/projects/heart-levels",
   "updateUrl": "",
   "authorList": ["FireController#1847", "073TheBoss"],
