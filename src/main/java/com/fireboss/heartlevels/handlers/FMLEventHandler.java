@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,8 +24,9 @@ public class FMLEventHandler {
 	 * 
 	 * @param event
 	 */
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onPlayerLivingUpdate(PlayerTickEvent event) {
+//		System.out.println("Playing Living Update");
 		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getCommandSenderEntity().getName());
 		Side side = event.side;
 		if (side == Side.CLIENT && stats.needClientSideHealthUpdate) {

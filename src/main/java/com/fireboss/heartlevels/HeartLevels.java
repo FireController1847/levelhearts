@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.fireboss.heartlevels.enchantments.ArmorHealthEnchantment;
+import com.fireboss.heartlevels.handlers.FMLEventHandler;
+import com.fireboss.heartlevels.handlers.ForgeEventHandler;
 import com.fireboss.heartlevels.handlers.PlayerHandler;
 import com.fireboss.heartlevels.init.InitChestLoot;
 import com.fireboss.heartlevels.init.InitItems;
@@ -48,7 +50,9 @@ public class HeartLevels {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		InitItems.Create();
-		proxy.RenderItems();
+		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
+		MinecraftForge.EVENT_BUS.register(new FMLEventHandler());
+		MinecraftForge.EVENT_BUS.register(instance);
 		if (Config.heartItems.getBoolean()) {
 			InitChestLoot.AddChestLoot();
 		}
