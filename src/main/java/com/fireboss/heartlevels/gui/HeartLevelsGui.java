@@ -41,7 +41,7 @@ public class HeartLevelsGui extends GuiScreen {
 		}
 		drawCenteredString(fontRendererObj, "Hearts from Enchantment: " + (extraHearts), sr.getScaledWidth()/2, sr.getScaledHeight()/2+8,
 				0xE0E0E0);
-		double health = PlayerHandlerHelper.calculateTotalHeartLevelsContrib(mc.thePlayer, stats);
+		double health = PlayerHandlerHelper.calcDefaultHearts(mc.thePlayer, stats);
 		double modAmount = Math.abs(20 + HeartLevels.healthMod.getAmount());
 		double heartsFromContainers = stats.heartContainers;
 		if (modAmount - health != 0) {

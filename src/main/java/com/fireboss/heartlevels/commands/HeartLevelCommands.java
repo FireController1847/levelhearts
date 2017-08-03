@@ -103,7 +103,7 @@ public class HeartLevelCommands implements ICommand {
 				PlayerStats stats = PlayerStats
 						.getPlayerStats(taggedPlayer.getUUID(taggedPlayer.getGameProfile()).toString());
 				taggedPlayer.removeExperienceLevel(Integer.MAX_VALUE);
-				double newMax = PlayerHandlerHelper.calculateTotalHeartLevelsContribNoHeartContainers(taggedPlayer,
+				double newMax = PlayerHandlerHelper.calcDefaultHeartsNoHC(taggedPlayer,
 						stats);
 				double updatedModifier = newMax - 20;
 				PlayerHandler.addHealthModifier(taggedPlayer, updatedModifier);

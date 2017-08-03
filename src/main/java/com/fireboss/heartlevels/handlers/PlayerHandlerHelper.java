@@ -50,7 +50,7 @@ public class PlayerHandlerHelper {
 
 		// NewMax calcualtes the player's starting health plus extra health from the XP
 		// system.
-		double newMax = PlayerHandlerHelper.calculateTotalHeartLevelsContrib(player, stats);
+		double newMax = PlayerHandlerHelper.calcDefaultHearts(player, stats);
 
 		// The mod's modifier should be based on the default of Minecraft (20) and not
 		// accounting other mods.
@@ -80,18 +80,14 @@ public class PlayerHandlerHelper {
 		}
 		hlt.setDouble("healthModifier", stats.healthmod);
 	}
-
+	
 	/**
-	 * Calculated the max health. Example: Let's start at 3 hearts. 6 + 2 + 2 + 2 =
-	 * 12; Default Health = 20; Modifier = 12-20 = -8; If the mod wants 22 max
-	 * health. If the default is 20, and another mod gave 2 health, it shouldn't be
-	 * doing 22-22, it should be doing 22-20.
-	 * 
+	 * Gets the default beginning hearts.
 	 * @param player
 	 * @param stats
 	 * @return
 	 */
-	public static double calculateTotalHeartLevelsContrib(EntityPlayer player, PlayerStats stats) {
+	public static double calcDefaultHearts(EntityPlayer player, PlayerStats stats) {
 		int rpgHealth = 0;
 		int maxHearts = Config.maxHearts.getInt();
 		int[] levelRamp = HeartLevels.LevelRampInt;
@@ -102,10 +98,8 @@ public class PlayerHandlerHelper {
 				break;
 			}
 		}
-		if (maxHearts != -1 && maxHearts != 0) {
-			if (rpgHealth > maxHearts * 2) {
-				rpgHealth = maxHearts * 2;
-			}
+		if (maxHearts != -1 && maxHearts != 0 && rpgHealth > maxHearts * 2) {
+			rpgHealth = maxHearts * 2;
 		}
 		int extraHearts = 0;
 		for (int i = 0; i < stats.oldArmourSet.length; i++) {
@@ -117,33 +111,15 @@ public class PlayerHandlerHelper {
 	}
 	
 	/**
-	 * Used to calculate the default heart level without heart containers. 
+	 * Get the default beginning hearts WITHOUT including Heart Containers.
 	 * @param player
 	 * @param stats
 	 * @return
 	 */
-	public static double calculateTotalHeartLevelsContribNoHeartContainers(EntityPlayer player, PlayerStats stats) {
-		int rpgHealth = 0;
-		int maxHearts = Config.maxHearts.getInt();
-		int[] levelRamp = HeartLevels.LevelRampInt;
-		for (int i = 0; i < levelRamp.length; i++) {
-			if (player.experienceLevel >= levelRamp[i]) {
-				rpgHealth += 2;
-			} else {
-				break;
-			}
-		}
-		if (maxHearts != -1 && maxHearts != 0) {
-			if (rpgHealth > maxHearts * 2) {
-				rpgHealth = maxHearts * 2;
-			}
-		}
-		int extraHearts = 0;
-		for (int i = 0; i < stats.oldArmourSet.length; i++) {
-			extraHearts += EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), stats.oldArmourSet[i]);
-		}
-		double armorHealth = extraHearts * 2;
-		return stats.start * 2 + rpgHealth + armorHealth;
+	public static double calcDefaultHeartsNoHC(EntityPlayer player, PlayerStats stats) {
+		double health = calcDefaultHearts(player, stats);
+		health -= stats.heartContainers * 2;
+		return health;
 	}
 
 	/**

@@ -92,11 +92,8 @@ public class PlayerHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onServerStop(ClientDisconnectionFromServerEvent event) {
-		Side side = FMLCommonHandler.instance().getEffectiveSide();
-		if (side == Side.CLIENT) {
-			// Called only if you go into a SP world, then quit, world is unloaded.
-			PlayerHandlerHelper.savePlayerData(FMLClientHandler.instance().getClient().thePlayer, true);
-		}
+		// Called only if you go into a SP world, then quit, world is unloaded.
+		PlayerHandlerHelper.savePlayerData(FMLClientHandler.instance().getClient().thePlayer, true);
 	}
 
 	/**
