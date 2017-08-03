@@ -3,6 +3,7 @@ package com.fireboss.heartlevels.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fireboss.heartlevels.Config;
 import com.fireboss.heartlevels.PlayerStats;
 import com.fireboss.heartlevels.handlers.PlayerHandler;
 import com.fireboss.heartlevels.handlers.PlayerHandlerHelper;
@@ -14,6 +15,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
@@ -51,51 +53,78 @@ public class HeartLevelCommands implements ICommand {
 			if (args[0].equalsIgnoreCase("help")) {
 				sender.addChatMessage(new ChatComponentText("§2--- Showing help page 1 of 1 (/hl help <page>) ---"));
 				sender.addChatMessage(new ChatComponentText(
-						"/hl reset [player] : Resets the user's levels (EXP AND HEARTS) completely."));
+						"/hl reset : Resets the user's levels (EXP AND HEARTS) completely."));
 			} else if (args[0].equalsIgnoreCase("reset")) {
+
+				// Check if RPG mode is off
+				if (!Config.rpgMode.getBoolean()) {
+					sender.addChatMessage(new ChatComponentText(
+							"§cRPG mode is currently off in the config, so you cannot use this command"));
+					return;
+				}
 
 				// Permission Checks & Console Checks
 				boolean hasPermission = false;
+				if (isConsole) {
+					sender.addChatMessage(new ChatComponentText(
+							"§cYou cannot run this command in console."));
+					return;
+				}
 				if (args.length > 1) {
 					taggedPlayer = sender.getEntityWorld().getPlayerEntityByName(args[1]);
 				} else {
-					if (isConsole) {
-						sender.addChatMessage(new ChatComponentText(
-								"§cYou must specify which player you wish to perform this action on."));
-						return;
-					} else {
-						taggedPlayer = player;
-					}
+					taggedPlayer = player;
 				}
 				if (taggedPlayer == null) {
 					sender.addChatMessage(new ChatComponentText("§cThat player cannot be found"));
 					return;
 				}
-				if (!isConsole
-						&& player.getUUID(player.getGameProfile()) == taggedPlayer.getUUID(player.getGameProfile())) {
+				boolean isThePlayer = false;
+				if (player.getUUID(player.getGameProfile()) == taggedPlayer.getUUID(player.getGameProfile())) {
 					hasPermission = true;
-				} else if (isConsole) {
-					hasPermission = true;
+					isThePlayer = true;
 				}
 				if (!hasPermission) {
 					sender.addChatMessage(new ChatComponentText("§cYou do not have permission to use this command"));
 					return;
 				}
-				
+
 				// Set the players health
-				PlayerStats stats = PlayerStats.getPlayerStats(taggedPlayer.getUUID(taggedPlayer.getGameProfile()).toString());
+				if (taggedPlayer.getHealth() != taggedPlayer.getMaxHealth()) {
+					if (isThePlayer) {
+						sender.addChatMessage(
+								new ChatComponentText("§cYou cannot use this command unless you are fully healed"));
+					} else {
+						sender.addChatMessage(new ChatComponentText(
+								"§cYou cannot use this command unless the user you are resetting is fully healed"));
+					}
+					return;
+				}
+				PlayerStats stats = PlayerStats
+						.getPlayerStats(taggedPlayer.getUUID(taggedPlayer.getGameProfile()).toString());
 				taggedPlayer.removeExperienceLevel(Integer.MAX_VALUE);
-				double newMax = PlayerHandlerHelper.calculateTotalHeartLevelsContribNoHeartContainers(taggedPlayer, stats);
+				double newMax = PlayerHandlerHelper.calculateTotalHeartLevelsContribNoHeartContainers(taggedPlayer,
+						stats);
 				double updatedModifier = newMax - 20;
 				PlayerHandler.addHealthModifier(taggedPlayer, updatedModifier);
 				stats.healthmod = taggedPlayer.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-						.getModifier(PlayerHandler.HeartLevelsID).getAmount();;
+						.getModifier(PlayerHandler.HeartLevelsID).getAmount();
 				stats.count = 0;
 				stats.heartContainers = 0;
 				taggedPlayer.setHealth(taggedPlayer.getMaxHealth());
 				taggedPlayer.addPotionEffect(new PotionEffect(Potion.blindness.id, 40));
-				sender.addChatMessage(new ChatComponentText("§aAny hearts gained from enchantments will not be reset."));
-				sender.addChatMessage(new ChatComponentText("You feel slightly uneasy while everything gets stripped down..."));
+				if (isThePlayer) {
+					sender.addChatMessage(
+							new ChatComponentText("§aAny hearts gained from enchantments will not be reset."));
+					sender.addChatMessage(
+							new ChatComponentText("You feel slightly uneasy while everything gets stripped down..."));
+				} else {
+					sender.addChatMessage(new ChatComponentText("Alright, I've reset that user's health."));
+					taggedPlayer.addChatMessage(
+							new ChatComponentText("§aAny hearts gained from enchantments will not be reset."));
+					taggedPlayer.addChatMessage(
+							new ChatComponentText("You feel slightly uneasy while everything gets stripped down..."));
+				}
 			} else {
 				sender.addChatMessage(new ChatComponentText("§cUsage: " + this.getCommandUsage(sender)));
 			}

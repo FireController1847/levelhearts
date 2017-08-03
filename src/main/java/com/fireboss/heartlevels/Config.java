@@ -34,7 +34,7 @@ public class Config {
 
 		// General Stuff
 
-		startHearts = config.get(category, "Starting Hearts", 20);
+		startHearts = config.get(category, "Starting Hearts", 10);
 		startHearts.comment = "The amount of hearts the user will start with.";
 
 		maxHearts = config.get(category, "Maximum Hearts", -1);
@@ -49,8 +49,8 @@ public class Config {
 		heartItems = config.get(category, "Heart Container And Pieces", true);
 		heartItems.comment = "Set to false to disable all heart containers from even registering into game.";
 
-		rpgMode = config.get(category, "RPG Mode", false);
-		rpgMode.comment = "Completely disables level ramping when set to true.";
+		rpgMode = config.get(category, "RPG Mode", true);
+		rpgMode.comment = "Set to false to completely disable level ramping.";
 
 		hardcoreMode = config.get(category, "Hardcore Mode", false);
 		hardcoreMode.comment = "Resets a user's heart level to starting hearts on death.";
