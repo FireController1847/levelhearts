@@ -51,7 +51,7 @@ public class Heart_Container extends Item {
 		PlayerHandler.addHealthModifier(player, updatedModifier);
 		player.addChatComponentMessage(
 				new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
-		PlayerStats stats = PlayerStats.getPlayerStats(player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
 		stats.healthmod = updatedModifier;
 		stats.heartContainers++;
 		player.setHealth(player.getMaxHealth());

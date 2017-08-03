@@ -1,5 +1,7 @@
 package com.fireboss.heartlevels;
 
+import java.util.UUID;
+
 import com.fireboss.heartlevels.handlers.PlayerHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,11 +22,11 @@ public class PlayerStats {
 	public float loggedOutHealth;
 	public int heartContainers; // Tracks how many heart containers were used
 
-	public static PlayerStats getPlayerStats(String username) {
-		PlayerStats stats = PlayerHandler.playerStats.get(username);
+	public static PlayerStats getPlayerStats(String uuid) {
+		PlayerStats stats = PlayerHandler.playerStats.get(uuid);
 		if (stats == null) {
 			stats = new PlayerStats();
-			PlayerHandler.playerStats.put(username, stats);
+			PlayerHandler.playerStats.put(uuid, stats);
 		}
 		return stats;
 	}

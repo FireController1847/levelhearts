@@ -57,7 +57,7 @@ public class PlayerHandler {
 
 		stats.player = event.player;
 		stats.justLoggedIn = true;
-		playerStats.put(event.player.getCommandSenderEntity().getName(), stats);
+		playerStats.put(event.player.getUUID(event.player.getGameProfile()).toString(), stats);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class PlayerHandler {
 		PlayerHandlerHelper.updatePlayerData(event.player);
 		// Set variable true so during OnLivingUpdate the user is forced to update the
 		// client side health
-		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
 		stats.needClientSideHealthUpdate = true;
 	}
 
@@ -123,7 +123,7 @@ public class PlayerHandler {
 	 */
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
 		// Since everything needed is either saves in the stats or in
 		// entityPlayer(maxhealth)
 		// no need to save anything here (even in ntb)
@@ -159,7 +159,7 @@ public class PlayerHandler {
 			// TODO: Handle Exception
 		}
 		tags.getCompoundTag("HeartLevels 1").setDouble("healthModifier", stats.healthmod);
-		playerStats.put(event.player.getCommandSenderEntity().getName(), stats);
+		playerStats.put(event.player.getUUID(event.player.getGameProfile()).toString(), stats);
 	}
 
 }

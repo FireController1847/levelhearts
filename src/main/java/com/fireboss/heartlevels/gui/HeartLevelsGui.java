@@ -23,7 +23,7 @@ public class HeartLevelsGui extends GuiScreen {
 	@Override
 	public void drawScreen(int par1, int par2, float par3) {
 		this.drawDefaultBackground();
-		PlayerStats stats = PlayerStats.getPlayerStats(mc.thePlayer.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(mc.thePlayer.getUUID(mc.thePlayer.getGameProfile()).toString());
 		drawCenteredString(fontRendererObj, "More Health Stats", mc.displayWidth / 4, 2, 0xE0E0E0);
 		drawCenteredString(fontRendererObj, "Current Hearts: " + (int) mc.thePlayer.getHealth() / 2.0,
 				mc.displayWidth / 4, 12, 0xE0E0E0);

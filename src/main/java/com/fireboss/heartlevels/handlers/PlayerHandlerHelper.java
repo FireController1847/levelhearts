@@ -191,7 +191,7 @@ public class PlayerHandlerHelper {
 	 * @param player
 	 */
 	static void updatePlayerData(EntityPlayer player) {
-		PlayerStats stats = PlayerStats.getPlayerStats(player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
 		double healthModifier = stats.healthmod;
 		PlayerHandler.addHealthModifier(player, healthModifier);
 	}
@@ -203,7 +203,7 @@ public class PlayerHandlerHelper {
 	 * @param loggedOut
 	 */
 	public static void savePlayerData(EntityPlayer player, boolean loggedOut) {
-		PlayerStats stats = PlayerStats.getPlayerStats(player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
 		if (stats == null) {
 			return;
 		}
@@ -250,7 +250,7 @@ public class PlayerHandlerHelper {
 		hlt.setDouble("healthModifier", currentMaxHealthMod);
 		hlt.setFloat("loggedOutHealth", player.getHealth());
 		hlt.setInteger("heartContainers", stats.heartContainers);
-		PlayerHandler.playerStats.remove(player.getCommandSenderEntity().getName());
+		PlayerHandler.playerStats.remove(player.getUUID(player.getGameProfile()).toString());
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class FMLEventHandler {
 	 */
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onPlayerLivingUpdate(PlayerTickEvent event) {
-		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getCommandSenderEntity().getName());
+		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
 		Side side = event.side;
 		if (side == Side.CLIENT && stats.needClientSideHealthUpdate) {
 			// Update the client side on a dimension change.
@@ -209,7 +209,7 @@ public class FMLEventHandler {
 		}
 		tags.getCompoundTag("HeartLevels 1").setDouble("healthModifier", stats.healthmod);
 		tags.getCompoundTag("HeartLevels 1").setInteger("previousLevel", stats.previousLevel);
-		PlayerHandler.playerStats.put(player.getCommandSenderEntity().getName(), stats);
+		PlayerHandler.playerStats.put(player.getUUID(player.getGameProfile()).toString(), stats);
 	}
 
 	/**
