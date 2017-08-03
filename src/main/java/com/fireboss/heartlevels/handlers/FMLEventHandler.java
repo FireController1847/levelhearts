@@ -26,7 +26,6 @@ public class FMLEventHandler {
 	 */
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public void onPlayerLivingUpdate(PlayerTickEvent event) {
-//		System.out.println("Playing Living Update");
 		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getCommandSenderEntity().getName());
 		Side side = event.side;
 		if (side == Side.CLIENT && stats.needClientSideHealthUpdate) {
@@ -178,15 +177,16 @@ public class FMLEventHandler {
 					&& player.experienceLevel >= HeartLevels.LevelRampInt[stats.count]) {
 				player.addChatComponentMessage(
 						new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
-				double updatedModifier = 0;
+				double updatedModifier = 2;
 				try {
 					updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-							.getModifier(PlayerHandler.HeartLevelsID).getAmount();
+							.getModifier(PlayerHandler.HeartLevelsID).getAmount() + 2.0;
 				} catch (Exception e) {
 				}
 				PlayerHandler.addHealthModifier(player, updatedModifier);
-				player.setHealth(player.getMaxHealth());
+				stats.healthmod = updatedModifier;
 				stats.count++;
+				player.setHealth(player.getMaxHealth());
 			}
 		}
 	}
