@@ -11,30 +11,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class ClientProxy extends CommonProxy {
-	
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
+public class ClientProxy implements ICommonProxy {
+
+	public void preInit() {
+
 	}
 
-	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
+	public void init() {
 		InitItems.Render();
 		MinecraftForge.EVENT_BUS.register(new HeartLevelsHUD(Minecraft.getMinecraft()));
-		HeartLevelsGui.keyBinding = new KeyBinding("key.hud.desc",
-				Keyboard.getKeyIndex(Config.guiKeyBinding.getString().toUpperCase()), "key.heartlevels.category");
+		HeartLevelsGui.keyBinding = new KeyBinding("HUD",
+				Keyboard.getKeyIndex(Config.guiKeyBinding.getString().toUpperCase()), "Heart Levels");
 		ClientRegistry.registerKeyBinding(HeartLevelsGui.keyBinding);
 	}
 
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
+	public void postInit() {
+
 	}
 
 }

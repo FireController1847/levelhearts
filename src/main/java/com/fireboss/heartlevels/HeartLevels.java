@@ -10,12 +10,13 @@ import com.fireboss.heartlevels.handlers.ForgeEventHandler;
 import com.fireboss.heartlevels.handlers.PlayerHandler;
 import com.fireboss.heartlevels.init.InitChestLoot;
 import com.fireboss.heartlevels.init.InitItems;
-import com.fireboss.heartlevels.proxy.CommonProxy;
+import com.fireboss.heartlevels.proxy.ICommonProxy;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -36,7 +37,7 @@ public class HeartLevels {
 	public static HeartLevels instance;
 
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
-	public static CommonProxy proxy;
+	public static ICommonProxy proxy;
 
 	public static int[] LevelRampInt;
 	public static Enchantment armorEnchantment;
@@ -47,11 +48,12 @@ public class HeartLevels {
 		Config.config = new Configuration(event.getSuggestedConfigurationFile());
 		Config.config.load();
 		Config.SetupConfig();
+		InitItems.Create();
+		proxy.preInit();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		InitItems.Create();
 		MinecraftForge.EVENT_BUS.register(new ForgeEventHandler());
 		MinecraftForge.EVENT_BUS.register(new FMLEventHandler());
 		MinecraftForge.EVENT_BUS.register(instance);
@@ -68,6 +70,7 @@ public class HeartLevels {
 		if (Config.enchantsEnabled.getBoolean()) {
 			armorEnchantment = new ArmorHealthEnchantment(Config.armorEnchantID.getInt(), 4);
 		}
+		proxy.init();
 	}
 
 	private static Object playerTracker;
@@ -76,6 +79,7 @@ public class HeartLevels {
 	public void postInit(FMLPostInitializationEvent event) {
 		playerTracker = new PlayerHandler();
 		MinecraftForge.EVENT_BUS.register(playerTracker);
+		proxy.postInit();
 	}
 
 	@EventHandler
