@@ -92,8 +92,8 @@ public class FMLEventHandler {
 				if (extraHearts > 0) {
 					int extraHealth = extraHearts; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod + extraHealth); // changes the health
-																								// modifier to this new
-																								// one
+					// modifier to this new
+					// one
 					if (!stats.justLoggedIn) {
 						player.addChatComponentMessage(new ChatComponentText("Equipping the armor binds an extra "
 								+ extraHearts + " enchanted hearts to your soul."));
@@ -188,8 +188,13 @@ public class FMLEventHandler {
 					updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 							.getModifier(PlayerHandler.HeartLevelsID).getAmount() + Config.heartGain.getInt();
 				} catch (Exception e) {
+					if(Config.debug.getBoolean()) {
+						HeartLevels.logger.catching(e);
+					}
 				}
-				PlayerHandler.addHealthModifier(player, updatedModifier);
+				if(!player.worldObj.isRemote) {
+					PlayerHandler.addHealthModifier(player, updatedModifier);
+				}
 				stats.healthmod = updatedModifier;
 				stats.count++;
 				player.setHealth(player.getMaxHealth());
