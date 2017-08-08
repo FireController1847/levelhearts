@@ -53,9 +53,8 @@ public class HeartLevelCommands implements ICommand {
 			EntityPlayer taggedPlayer = null;
 			boolean isConsole = (player == null);
 			if (args[0].equalsIgnoreCase("help")) {
-				sender.addChatMessage(new ChatComponentText("§2--- Showing help page 1 of 1 (/hl help <page>) ---"));
-				sender.addChatMessage(new ChatComponentText(
-						"/hl reset : Resets the user's levels (EXP AND HEARTS) completely."));
+				sender.addChatMessage(new ChatComponentTranslation("help.page1.line1").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_GREEN)));
+				sender.addChatMessage(new ChatComponentTranslation("help.page1.line2"));
 			} else if (args[0].equalsIgnoreCase("reset")) {
 
 				// Check if RPG mode is off

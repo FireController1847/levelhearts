@@ -19,6 +19,9 @@ text.uneasy=You feel slightly uneasy while everything gets stripped down...
 text.resetuser=Alright, I've reset that user's health.
 text.usage=Usage: %s
 
+help.page1.line1=--- Showing help page 1 of 1 (/hl help <page>) ---
+help.page1.line2=/hl reset : Resets the user's levels (EXP AND HEARTS) completely.
+
 gui.statsheader=More Health Stats
 gui.currenthearts=Current Hearts: %s
 gui.maxhearts=Max Hearts: %s
