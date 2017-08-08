@@ -1,13 +1,13 @@
 item.heart_container.name=Heart Container
 item.heart_piece.name=Heart Piece
 
-text.heartadded=Your Life has increased by one and is also now fully replenished!
-text.equipweak=Equipping the weaker new armor releases an extra %s enchanted hearts.
-text.equipstrong=Equipping the stronger new armor binds an extra %s enchanted hearts to your soul.
+text.heartadded=Your life has increased by one and is now fully replenished!
+text.equipweak=Equipping the weaker armor releases an extra %s enchanted hearts to your soul.
+text.equipstrong=Equipping the stronger armor binds an extra %s enchanted hearts to your soul.
 text.equipnew=Equipping the armor binds an extra %s enchanted hearts to your soul.
 text.removearmour=Removing the armor causes the extra %s enchanted hearts to fade away.
-text.itemsdisabled=These items are disabled in config! You cannot use it.
-text.lifefull=Your Life is fully replenished!
+text.itemsdisabled=Heart items are disabled in config! You cannot use them.
+text.lifefull=Your life is fully replenished!
 text.rpgoff=RPG mode is currently off in the config, so you cannot use this command
 text.noconsole=You cannot run this command in console!
 text.noplayer=That player cannot be found
