@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,14 +31,14 @@ public class Heart_Container extends Item {
 		}
 		if (Config.heartItems.getBoolean() == false) {
 			player.addChatComponentMessage(
-					new ChatComponentText("This items are disabled in config! You cannot use it."));
+					new ChatComponentTranslation("text.itemsdisabled"));
 			return items;
 		}
 		items.stackSize--;
 		// Check -- In this case, heart container acts as a full heal item.
 		if (Config.maxHearts.getInt() != -1 && Config.maxHearts.getInt() != 0
 				&& player.getMaxHealth() + 2 > Config.maxHearts.getInt() * 2) {
-			player.addChatComponentMessage(new ChatComponentText("Your Life is fully replenished!"));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.lifefull"));
 			player.setHealth(player.getMaxHealth());
 			return items;
 		}
@@ -50,7 +51,7 @@ public class Heart_Container extends Item {
 		}
 		PlayerHandler.addHealthModifier(player, updatedModifier);
 		player.addChatComponentMessage(
-				new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
+				new ChatComponentTranslation("text.heartadded"));
 		PlayerStats stats = PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
 		stats.healthmod = updatedModifier;
 		stats.heartContainers++;

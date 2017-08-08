@@ -15,9 +15,11 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 
 public class HeartLevelCommands implements ICommand {
 
@@ -58,16 +60,14 @@ public class HeartLevelCommands implements ICommand {
 
 				// Check if RPG mode is off
 				if (!Config.rpgMode.getBoolean()) {
-					sender.addChatMessage(new ChatComponentText(
-							"§cRPG mode is currently off in the config, so you cannot use this command"));
+					sender.addChatMessage(new ChatComponentTranslation("text.rpgoff").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					return;
 				}
 
 				// Permission Checks & Console Checks
 				boolean hasPermission = false;
 				if (isConsole) {
-					sender.addChatMessage(new ChatComponentText(
-							"§cYou cannot run this command in console."));
+					sender.addChatMessage(new ChatComponentTranslation("text.noconsole"));
 					return;
 				}
 				if (args.length > 1) {
@@ -76,7 +76,7 @@ public class HeartLevelCommands implements ICommand {
 					taggedPlayer = player;
 				}
 				if (taggedPlayer == null) {
-					sender.addChatMessage(new ChatComponentText("§cThat player cannot be found"));
+					sender.addChatMessage(new ChatComponentTranslation("text.noplayer").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					return;
 				}
 				boolean isThePlayer = false;
@@ -85,18 +85,16 @@ public class HeartLevelCommands implements ICommand {
 					isThePlayer = true;
 				}
 				if (!hasPermission) {
-					sender.addChatMessage(new ChatComponentText("§cYou do not have permission to use this command"));
+					sender.addChatMessage(new ChatComponentTranslation("text.noperms").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					return;
 				}
 
 				// Set the players health
 				if (taggedPlayer.getHealth() != taggedPlayer.getMaxHealth()) {
 					if (isThePlayer) {
-						sender.addChatMessage(
-								new ChatComponentText("§cYou cannot use this command unless you are fully healed"));
+						sender.addChatMessage(new ChatComponentTranslation("text.notfull").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					} else {
-						sender.addChatMessage(new ChatComponentText(
-								"§cYou cannot use this command unless the user you are resetting is fully healed"));
+						sender.addChatMessage(new ChatComponentTranslation("text.notfull2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					}
 					return;
 				}
@@ -114,16 +112,12 @@ public class HeartLevelCommands implements ICommand {
 				taggedPlayer.setHealth(taggedPlayer.getMaxHealth());
 				taggedPlayer.addPotionEffect(new PotionEffect(Potion.blindness.id, 40));
 				if (isThePlayer) {
-					sender.addChatMessage(
-							new ChatComponentText("§aAny hearts gained from enchantments will not be reset."));
-					sender.addChatMessage(
-							new ChatComponentText("You feel slightly uneasy while everything gets stripped down..."));
+					sender.addChatMessage(new ChatComponentTranslation("text.enchnotreset").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					sender.addChatMessage(new ChatComponentTranslation("text.uneasy").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
 				} else {
-					sender.addChatMessage(new ChatComponentText("Alright, I've reset that user's health."));
-					taggedPlayer.addChatMessage(
-							new ChatComponentText("§aAny hearts gained from enchantments will not be reset."));
-					taggedPlayer.addChatMessage(
-							new ChatComponentText("You feel slightly uneasy while everything gets stripped down..."));
+					sender.addChatMessage(new ChatComponentTranslation("text.resetuser").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					taggedPlayer.addChatMessage(new ChatComponentTranslation("text.enchnotreset").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					taggedPlayer.addChatMessage(new ChatComponentTranslation("text.uneasy").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
 				}
 			} else {
 				sender.addChatMessage(new ChatComponentText("§cUsage: " + this.getCommandUsage(sender)));

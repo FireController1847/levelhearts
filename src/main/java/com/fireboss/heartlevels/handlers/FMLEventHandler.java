@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -82,8 +83,7 @@ public class FMLEventHandler {
 				if (extraHearts > 0) {
 					int extraHealth = extraHearts; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod - extraHealth);
-					player.addChatComponentMessage(new ChatComponentText(
-							"Removing the armor causes the extra " + extraHearts + " enchanted hearts to fade away."));
+					player.addChatComponentMessage(new ChatComponentTranslation("text.removearmour", extraHearts));
 					stats.needClientSideHealthUpdate = true;
 				}
 			} else if (currentArmour != null && oldArmour == null) {
@@ -95,8 +95,7 @@ public class FMLEventHandler {
 					// modifier to this new
 					// one
 					if (!stats.justLoggedIn) {
-						player.addChatComponentMessage(new ChatComponentText("Equipping the armor binds an extra "
-								+ extraHearts + " enchanted hearts to your soul."));
+						player.addChatComponentMessage(new ChatComponentTranslation("text.equipnew", extraHearts));
 					}
 					stats.needClientSideHealthUpdate = true;
 					armourHealth += extraHealth;
@@ -114,15 +113,14 @@ public class FMLEventHandler {
 				if (healthChange > 0) {
 					// Player overall gained hearts
 					player.addChatComponentMessage(
-							new ChatComponentText("Equipping the stronger new armor binds an extra " + healthChange
-									+ " enchanted hearts to your soul."));
+							new ChatComponentTranslation("text.equipstrong", healthChange));
 					stats.needClientSideHealthUpdate = true;
 
 				}
 				if (healthChange < 0) {
 					// Player overall lost hearts
-					player.addChatComponentMessage(new ChatComponentText(
-							"Equipping the weaker new armor releases an extra " + healthChange + " enchanted hearts."));
+					player.addChatComponentMessage(new ChatComponentTranslation(
+							"text.equipweak", healthChange));
 					stats.needClientSideHealthUpdate = true;
 				}
 			}
@@ -182,7 +180,7 @@ public class FMLEventHandler {
 					HeartLevels.logger.info("EXP matches next level ramp! Upping player level...");
 				}
 				player.addChatComponentMessage(
-						new ChatComponentText("Your Life has increased by one and is also now fully replenished!"));
+						new ChatComponentTranslation("text.heartadded"));
 				double updatedModifier = 2;
 				try {
 					updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
