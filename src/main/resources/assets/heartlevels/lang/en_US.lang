@@ -17,6 +17,7 @@ text.notfull2=You cannot use this command unless the user you are resetting is f
 text.enchnotreset=Any hearts gained from enchantments will not be reset.
 text.uneasy=You feel slightly uneasy while everything gets stripped down...
 text.resetuser=Alright, I've reset that user's health.
+text.usage=Usage: %s
 
 gui.statsheader=More Health Stats
 gui.currenthearts=Current Hearts: %s

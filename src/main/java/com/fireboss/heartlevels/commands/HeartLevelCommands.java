@@ -67,7 +67,7 @@ public class HeartLevelCommands implements ICommand {
 				// Permission Checks & Console Checks
 				boolean hasPermission = false;
 				if (isConsole) {
-					sender.addChatMessage(new ChatComponentTranslation("text.noconsole"));
+					sender.addChatMessage(new ChatComponentTranslation("text.noconsole").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 					return;
 				}
 				if (args.length > 1) {
@@ -113,17 +113,17 @@ public class HeartLevelCommands implements ICommand {
 				taggedPlayer.addPotionEffect(new PotionEffect(Potion.blindness.id, 40));
 				if (isThePlayer) {
 					sender.addChatMessage(new ChatComponentTranslation("text.enchnotreset").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
-					sender.addChatMessage(new ChatComponentTranslation("text.uneasy").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					sender.addChatMessage(new ChatComponentTranslation("text.uneasy"));
 				} else {
-					sender.addChatMessage(new ChatComponentTranslation("text.resetuser").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					sender.addChatMessage(new ChatComponentTranslation("text.resetuser"));
 					taggedPlayer.addChatMessage(new ChatComponentTranslation("text.enchnotreset").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
-					taggedPlayer.addChatMessage(new ChatComponentTranslation("text.uneasy").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
+					taggedPlayer.addChatMessage(new ChatComponentTranslation("text.uneasy"));
 				}
 			} else {
-				sender.addChatMessage(new ChatComponentText("§cUsage: " + this.getCommandUsage(sender)));
+				sender.addChatMessage(new ChatComponentTranslation("text.usage", this.getCommandUsage(sender)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 			}
 		} else {
-			sender.addChatMessage(new ChatComponentText("§cUsage: " + this.getCommandUsage(sender)));
+			sender.addChatMessage(new ChatComponentTranslation("text.usage", this.getCommandUsage(sender)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 	}
 
