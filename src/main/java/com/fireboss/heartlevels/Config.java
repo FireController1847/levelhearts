@@ -31,9 +31,6 @@ public class Config {
 	public static Property minimalGui;
 	public static Property guiKeyBinding;
 
-	// Messages
-	public static Property onNewHeart;
-
 	public static Configuration config;
 
 	public static void SetupConfig() {
@@ -92,11 +89,6 @@ public class Config {
 		minimalGui = config.get(guiCategory, "Minimal HUD", false);
 		minimalGui.comment = "A number shows up next to the full hearts saying how many hearts you have by tens."
 				+ " So if you have 25 full hearts, 5 hearts will show on the HUD and a 2 will show up next to it.";
-
-		// Message Stuff
-
-		onNewHeart = config.get(msgCategory, "On New Heart",
-				"Your life has increased by one and is also now fully replenished!");
 
 		if (config.hasChanged()) {
 			config.save();
