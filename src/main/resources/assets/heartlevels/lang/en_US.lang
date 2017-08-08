@@ -18,6 +18,11 @@ text.enchnotreset=Any hearts gained from enchantments will not be reset.
 text.uneasy=You feel slightly uneasy while everything gets stripped down...
 text.resetuser=Alright, I've reset that user's health.
 text.usage=Usage: %s
+text.lvlrmpchanged=Level Ramp successfully changed!
+text.heartcontaintermode=Heart Container mode enabled!
+text.enhancedmode=Enhanced mode activated! (RPG + Heart Containers)
+text.rpgmode=RPG mode enabled!
+
 
 help.page1.line1=--- Showing help page 1 of 1 (/hl help <page>) ---
 help.page1.line2=/hl reset : Resets the user's levels (EXP AND HEARTS) completely.

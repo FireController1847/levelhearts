@@ -11,7 +11,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class PlayerHandlerHelper {
 
@@ -35,7 +35,7 @@ public class PlayerHandlerHelper {
 		// but nothing should really change.
 		if (!Arrays.equals(stats.LevelArray, HeartLevels.LevelRampInt)) {
 			stats.LevelArray = HeartLevels.LevelRampInt;
-			player.addChatComponentMessage(new ChatComponentText("Level Ramp successfully changed!"));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.lvlrmpchanged"));
 			hlt.setIntArray("LevelArray", stats.LevelArray);
 		}
 
@@ -44,7 +44,7 @@ public class PlayerHandlerHelper {
 
 		// If not in RPG mode
 		if (!Config.rpgMode.getBoolean()) {
-			player.addChatComponentMessage(new ChatComponentText("Heart Container mode enabled!"));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.heartcontainermode"));
 			return;
 		}
 
@@ -61,16 +61,16 @@ public class PlayerHandlerHelper {
 
 		// If we updated the player's health
 		if (stats.count > 0) {
-			player.addChatComponentMessage(new ChatComponentText(Config.onNewHeart.getString()));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.heartadded"));
 		}
 
 		// Enhanced Mode / RPG mode
 		boolean rpgMode = Config.rpgMode.getBoolean();
 		boolean heartItems = Config.heartItems.getBoolean();
 		if (rpgMode == true && heartItems == true) {
-			player.addChatComponentMessage(new ChatComponentText("Enhanced mode activated! (RPG + Heart Containers)"));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.enhancedmode"));
 		} else if (rpgMode == true) {
-			player.addChatComponentMessage(new ChatComponentText("RPG mode enabled!"));
+			player.addChatComponentMessage(new ChatComponentTranslation("text.rpgmode"));
 		}
 		hlt.setInteger("count", stats.count);
 
