@@ -8,7 +8,6 @@ public class Config {
 	private static String category = Configuration.CATEGORY_GENERAL;
 	private static String healthCategory = "health";
 	private static String guiCategory = "gui";
-	private static String msgCategory = "messages";
 
 	// General
 	public static Property heartItems;
