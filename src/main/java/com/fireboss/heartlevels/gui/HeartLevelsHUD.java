@@ -186,8 +186,7 @@ public class HeartLevelsHUD extends Gui {
 						text = "9999+";
 						adjustedColorX -= 6;
 					}
-					mc.fontRendererObj.drawString(text, adjustedColorX + 1, colorY, 0);
-					mc.fontRendererObj.drawString(text, adjustedColorX - 1, colorY, 0);
+					mc.fontRendererObj.drawString(text, adjustedColorX, colorY, 0);
 					mc.fontRendererObj.drawString(text, adjustedColorX, 0xF00000, 0);
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 					bind(Gui.icons);

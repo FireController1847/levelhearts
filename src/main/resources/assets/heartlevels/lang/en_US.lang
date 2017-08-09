@@ -1,6 +1,8 @@
 item.heart_container.name=Heart Container
 item.heart_piece.name=Heart Piece
 
+enchantment.hearts=Hearts
+
 text.heartadded=Your life has increased by one and is now fully replenished!
 text.equipweak=Equipping the weaker armor releases an extra %s enchanted hearts to your soul.
 text.equipstrong=Equipping the stronger armor binds an extra %s enchanted hearts to your soul.

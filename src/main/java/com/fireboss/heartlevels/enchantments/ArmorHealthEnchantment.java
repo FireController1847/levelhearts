@@ -8,7 +8,7 @@ public class ArmorHealthEnchantment extends Enchantment {
 
 	public ArmorHealthEnchantment(int effectID, int weight) {
 		super(effectID, null, weight, EnumEnchantmentType.ARMOR);
-		this.setName("Hearts");
+		this.setName("hearts");
 	}
 
 	/**
