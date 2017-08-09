@@ -37,7 +37,7 @@ public class Heart_Container extends Item {
 		items.stackSize--;
 		// Check -- In this case, heart container acts as a full heal item.
 		if (Config.maxHearts.getInt() != -1 && Config.maxHearts.getInt() != 0
-				&& player.getMaxHealth() + 2 > Config.maxHearts.getInt() * 2) {
+				&& player.getMaxHealth() + 2 > Config.maxHearts.getInt()) {
 			player.addChatComponentMessage(new ChatComponentTranslation("text.lifefull"));
 			player.setHealth(player.getMaxHealth());
 			return items;
