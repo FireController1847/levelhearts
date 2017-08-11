@@ -106,6 +106,7 @@ public class PlayerHandler {
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
 		PlayerHandlerHelper.savePlayerData(event.player, false);
 		// Changing dimention also requires an update.
+		// Changing dimension also requires an update.
 		PlayerHandlerHelper.updatePlayerData(event.player);
 		// Set variable true so during OnLivingUpdate the user is forced to update the
 		// client side health
