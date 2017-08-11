@@ -4,7 +4,7 @@ item.heart_piece.name=Heart Piece
 enchantment.hearts=Hearts
 
 text.heartadded=Your life has increased by one and is now fully replenished!
-text.equipweak=Equipping the weaker armor releases an extra %s enchanted hearts to your soul.
+text.equipweak=Equipping the weaker armor releases the extra %s enchanted hearts from your soul.
 text.equipstrong=Equipping the stronger armor binds an extra %s enchanted hearts to your soul.
 text.equipnew=Equipping the armor binds an extra %s enchanted hearts to your soul.
 text.removearmour=Removing the armor causes the extra %s enchanted hearts to fade away.

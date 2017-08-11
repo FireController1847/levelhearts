@@ -105,7 +105,7 @@ public class PlayerHandlerHelper {
 		for (int i = 0; i < stats.oldArmourSet.length; i++) {
 			extraHearts += EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), stats.oldArmourSet[i]);
 		}
-		double armorHealth = extraHearts; // OLD: extraHearts * 2
+		double armorHealth = extraHearts * 2; // OLD: extraHearts * 2
 		double heartContainerHealth = stats.heartContainers; // OLD: heartContainers * 2
 		return stats.start + rpgHealth + armorHealth + heartContainerHealth; // OLD: start * 2
 	}
@@ -229,7 +229,7 @@ public class PlayerHandlerHelper {
 			ItemStack currArmor = stats.oldArmourSet[i];
 			int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currArmor);
 			if (extraHearts > 0) {
-				int extraHealth = extraHearts; // OLD: extraHearts * 2
+				int extraHealth = extraHearts * 2; // OLD: extraHearts * 2
 				currentMaxHealthMod -= extraHealth;
 			}
 		}

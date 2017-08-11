@@ -9,8 +9,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -29,7 +29,7 @@ public class FMLEventHandler {
 	public void onPlayerLivingUpdate(PlayerTickEvent event) {
 		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
 		Side side = event.side;
-		if (side == Side.CLIENT && stats.needClientSideHealthUpdate) {
+		if (stats.needClientSideHealthUpdate) {
 			// Update the client side on a dimension change.
 			PlayerHandlerHelper.savePlayerData(event.player, false);
 			PlayerHandlerHelper.updatePlayerData(event.player);
@@ -81,7 +81,7 @@ public class FMLEventHandler {
 				int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
 				// 1 heart = 2 health (because reasons)
 				if (extraHearts > 0) {
-					int extraHealth = extraHearts; // OLD: * 2
+					int extraHealth = extraHearts * 2; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod - extraHealth);
 					player.addChatComponentMessage(new ChatComponentTranslation("text.removearmour", extraHearts));
 					stats.needClientSideHealthUpdate = true;
@@ -90,12 +90,13 @@ public class FMLEventHandler {
 				// Armour was equipped (with nothing before)
 				int extraHearts = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
 				if (extraHearts > 0) {
-					int extraHealth = extraHearts; // OLD: * 2
+					int extraHealth = extraHearts * 2; // OLD: * 2
 					PlayerHandler.addHealthModifier(player, currentMaxHealthMod + extraHealth); // changes the health
 					// modifier to this new
 					// one
 					if (!stats.justLoggedIn) {
-						player.addChatComponentMessage(new ChatComponentTranslation("text.equipnew", extraHearts));
+						player.addChatComponentMessage(
+								new ChatComponentTranslation("text.equipnew", (int) MathHelper.abs(extraHearts)));
 					}
 					stats.needClientSideHealthUpdate = true;
 					armourHealth += extraHealth;
@@ -104,23 +105,23 @@ public class FMLEventHandler {
 				// Do nothing, the armour hasn't changed.
 			} else {
 				// Both are not null, and they are not equal to each other.
-				// Removed 2* because of half hearts are now accepted on both oldHealth and newHealth
-				int oldHealth = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
-				int newHealth = EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
+				// Removed 2* because of half hearts are now accepted on both oldHealth and
+				// newHealth
+				int oldHealth = 2 * EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), oldArmour);
+				int newHealth = 2
+						* EnchantmentHelper.getEnchantmentLevel(Config.armorEnchantID.getInt(), currentArmour);
 				int healthChange = newHealth - oldHealth;
 				PlayerHandler.addHealthModifier(player, currentMaxHealthMod + healthChange);
 				// Adds the change in health (can be positive and negative)
 				if (healthChange > 0) {
 					// Player overall gained hearts
-					player.addChatComponentMessage(
-							new ChatComponentTranslation("text.equipstrong", healthChange));
+					player.addChatComponentMessage(new ChatComponentTranslation("text.equipstrong", (int) MathHelper.abs(healthChange / 2)));
 					stats.needClientSideHealthUpdate = true;
 
 				}
 				if (healthChange < 0) {
 					// Player overall lost hearts
-					player.addChatComponentMessage(new ChatComponentTranslation(
-							"text.equipweak", healthChange));
+					player.addChatComponentMessage(new ChatComponentTranslation("text.equipweak", (int) MathHelper.abs(healthChange / 2)));
 					stats.needClientSideHealthUpdate = true;
 				}
 			}
@@ -179,18 +180,17 @@ public class FMLEventHandler {
 				if (Config.debug.getBoolean()) {
 					HeartLevels.logger.info("EXP matches next level ramp! Upping player level...");
 				}
-				player.addChatComponentMessage(
-						new ChatComponentTranslation("text.heartadded"));
+				player.addChatComponentMessage(new ChatComponentTranslation("text.heartadded"));
 				double updatedModifier = 2;
 				try {
 					updatedModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 							.getModifier(PlayerHandler.HeartLevelsID).getAmount() + Config.heartGain.getInt();
 				} catch (Exception e) {
-					if(Config.debug.getBoolean()) {
+					if (Config.debug.getBoolean()) {
 						HeartLevels.logger.catching(e);
 					}
 				}
-				if(!player.worldObj.isRemote) {
+				if (!player.worldObj.isRemote) {
 					PlayerHandler.addHealthModifier(player, updatedModifier);
 				}
 				stats.healthmod = updatedModifier;

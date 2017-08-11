@@ -8,6 +8,7 @@ import com.fireboss.heartlevels.Config;
 import com.fireboss.heartlevels.HeartLevels;
 import com.fireboss.heartlevels.PlayerStats;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -47,8 +48,7 @@ public class PlayerHandler {
 		// Update health (for changes in config)
 		// Start gets set to default config. If the user changes it, heart values need
 		// to be recalculated.
-		if (stats.start != Config.startHearts.getInt()
-				|| !Arrays.equals(stats.LevelArray, HeartLevels.LevelRampInt)) {
+		if (stats.start != Config.startHearts.getInt() || !Arrays.equals(stats.LevelArray, HeartLevels.LevelRampInt)) {
 			PlayerHandlerHelper.updateHealth(event.player, stats, tags);
 		}
 
@@ -103,15 +103,14 @@ public class PlayerHandler {
 	 */
 	@SubscribeEvent
 	public void onPlayerChangedDimention(PlayerChangedDimensionEvent event) {
-		Side side = FMLCommonHandler.instance().getEffectiveSide();
 		PlayerHandlerHelper.savePlayerData(event.player, false);
-		// Changing dimention also requires an update.
 		// Changing dimension also requires an update.
 		PlayerHandlerHelper.updatePlayerData(event.player);
 		// Set variable true so during OnLivingUpdate the user is forced to update the
 		// client side health
 		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
 		stats.needClientSideHealthUpdate = true;
+		System.out.println("Player changed dimention!");
 	}
 
 	/**
