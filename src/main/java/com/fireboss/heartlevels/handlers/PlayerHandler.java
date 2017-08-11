@@ -86,6 +86,17 @@ public class PlayerHandler {
 	}
 
 	/**
+	 * Fired at the client when a client disconnects.
+	 * 
+	 * @param event
+	 */
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onServerStop(ClientDisconnectionFromServerEvent event) {
+		PlayerHandlerHelper.savePlayerData(FMLClientHandler.instance().getClient().thePlayer, true);
+	}
+
+	/**
 	 * When the player changes dimension.
 	 * 
 	 * @param event
