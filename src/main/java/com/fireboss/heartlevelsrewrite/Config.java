@@ -18,6 +18,7 @@ public class Config {
 	// Health
 	public static Property startHealth;
 	public static Property maxHealth;
+	public static Property levelRamp;
 	public static Property hardcoreMode;
 
 	// GUI
@@ -39,38 +40,44 @@ public class Config {
 
 		maxHealth = config.get(healCat, "Maximum Health", -1);
 		maxHealth.comment = "The maximum health a user should have in half-hearts. Default: 1000";
-		
+
+		levelRamp = config.get(healCat, "Level Ramp", new int[] { 1, 5, 10, 15, 20, 25, 30, 34, 38, 42, 46, 50, 53, 56,
+				59, 62, 64, 66, 68, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200 });
+		levelRamp.comment = "The levels at which the user gains hearts. Default: 1, 5, 10, 15, 20, 25, 30, 34, 38, 42, 46, 50, 53, 56, 59, 62, 64, 66, 68, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200";
+
 		hardcoreMode = config.get(healCat, "Hardcore Mode", false);
 		hardcoreMode.comment = "Resets your hearts back to the starting value on death. Default: false.";
-		
+
 		// GUI Stuff
 		customHud = config.get(guiCat, "Custom HUD", true);
 		customHud.comment = "Enables the mods Custom HUD rendering engine. Disabling this will use Minecraft's default HUD rendering engine. Default: true";
-		
+
 		minimalHud = config.get(guiCat, "Minimal HUD", false);
 		minimalHud.comment = "Enables the Custom HUD, but instead of stacking hearts it will show a number next to them. Default: false";
-		
+
 		minimalHudNumberPos = config.get(guiCat, "Minimal HUD Number Position", "left");
-		minimalHudNumberPos.setValidValues(new String[] {"right", "left"});
+		minimalHudNumberPos.setValidValues(new String[] { "right", "left" });
 		minimalHudNumberPos.comment = "Positions the number in the Minimal HUD. Can only be set to 'left' or 'right'. Default: 'left'";
-		
+
 		// Save
 		if (config.hasChanged()) {
 			config.save();
+			HeartLevels.debug("Saving config.");
 		}
 	}
-	
+
 	public static void verifyConfig() {
 		if (!Arrays.asList(minimalHudNumberPos.getValidValues()).contains(minimalHudNumberPos.getString())) {
-			HeartLevels.logger.error("Invalid value for Minimal HUD Number Position in config. Resetting to default value!");
-//			minimalHudNumberPos.setToDefault(); // Doesn't set changed to true?
+			HeartLevels.logger
+					.error("Invalid value for Minimal HUD Number Position in config. Resetting to default value!");
+			// minimalHudNumberPos.setToDefault(); // Doesn't set changed to true?
 			minimalHudNumberPos.set(minimalHudNumberPos.getDefault());
 		}
-		
+
 		// Save
 		if (config.hasChanged()) {
 			config.save();
-			System.out.println("Saving config");
+			HeartLevels.debug("Saving config.");
 		}
 	}
 }

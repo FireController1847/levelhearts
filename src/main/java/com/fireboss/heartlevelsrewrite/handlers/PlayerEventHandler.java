@@ -29,6 +29,7 @@ public class PlayerEventHandler {
 			event.player.setHealth(stats.outHealth);
 			stats.justLoggedIn = false;
 		}
+		PlayerHandler.calcHealthChange(event.player, stats);
 		PlayerHandler.saveHeartChange(event.player, stats, event.player.getEntityData());
 	}
 
@@ -50,10 +51,12 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		PlayerStats stats = PlayerHandler.getPlayerStats(event.player);
-		if (Config.hardcoreMode.getBoolean()) 
+		if (Config.hardcoreMode.getBoolean()) {
+			stats.currentLrPos = 0;
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.start - event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
-		else
+		} else {
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
+		}
 		event.player.setHealth(event.player.getMaxHealth());
 		NBTTagCompound tags = event.player.getEntityData();
 		NBTTagCompound hlt = NBTHandler.createNewTag(tags);
@@ -67,7 +70,7 @@ public class PlayerEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
-		PlayerHandler.updateModifier(event.player, 0, false);
+		PlayerHandler.updateModifier(event.player, 0);
 		PlayerHandler.savePlayerData(event.player, false);
 		PlayerStats stats = PlayerHandler.getPlayerStats(event.player);
 		PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);

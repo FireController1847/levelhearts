@@ -50,8 +50,9 @@ public class PlayerHandler {
 
 	public static void setupNewPlayer(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
 		stats.start = Config.startHealth.getInt();
+		stats.currentLrPos = 0;
 		stats.prevLevel = player.experienceLevel;
-		updateModifier(player, stats.start - SharedMonsterAttributes.maxHealth.getDefaultValue(), false);
+		updateModifier(player, stats.start - SharedMonsterAttributes.maxHealth.getDefaultValue());
 		savePlayerData(player, false);
 		updatePlayerHealth(player, tags, stats);
 	}
@@ -63,6 +64,8 @@ public class PlayerHandler {
 		}
 		NBTTagCompound hlt = NBTHandler.getTag(tags, false);
 		stats.start = hlt.getInteger("start");
+		stats.currentLrPos = hlt.getInteger("currentLrPos");
+		stats.prevLevel = hlt.getInteger("prevLevel");
 		stats.modifier = hlt.getDouble("modifier");
 	}
 
@@ -72,6 +75,7 @@ public class PlayerHandler {
 			return;
 		NBTTagCompound hlt = NBTHandler.getTag(player.getEntityData(), false);
 		hlt.setInteger("start", stats.start);
+		hlt.setInteger("currentLrPos", stats.currentLrPos);
 		hlt.setInteger("prevLevel", stats.prevLevel);
 		hlt.setDouble("modifier", stats.modifier);
 		if (!loggedOut)
@@ -80,25 +84,70 @@ public class PlayerHandler {
 
 	public static void saveHeartChange(EntityPlayer player, PlayerStats stats, NBTTagCompound tags) {
 		NBTTagCompound hlt = NBTHandler.getTag(tags, true);
-		updateModifier(player, 0, false);
+		updateModifier(player, 0);
 		hlt.setInteger("prevLevel", stats.prevLevel);
 		playerStats.put(player.getUUID(player.getGameProfile()).toString(), stats);
 	}
 
-	public static void updateModifier(EntityPlayer player, double amountChanged, boolean clientSideUpdate) {
+	public static double updateModifier(EntityPlayer player, double amountChanged) {
 		PlayerStats stats = getPlayerStats(player);
+		double newModifier = 0;
 		try {
-			stats.modifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+			newModifier = player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
 					.getModifier(Reference.HEART_LEVELS_UUID).getAmount() + amountChanged;
+			stats.modifier = newModifier;
 		} catch (Exception e) {
 			HeartLevels.debugErr(e);
 		}
-		if (amountChanged != 0 || clientSideUpdate)
-			stats.needsClientSideUpdate = true;
+		return newModifier;
 	}
 
 	public static PlayerStats getPlayerStats(EntityPlayer player) {
 		return PlayerStats.getPlayerStats(player.getUUID(player.getGameProfile()).toString());
+	}
+
+	public static boolean hasLevelChanged(EntityPlayer player, PlayerStats stats) {
+		boolean hlc = false;
+		if (stats.prevLevel != player.experienceLevel) {
+			stats.prevLevel = player.experienceLevel;
+			hlc = true;
+		}
+		return hlc;
+	}
+
+	public static void calcHealthChange(EntityPlayer player, PlayerStats stats) {
+		int max = Config.maxHealth.getInt();
+		if (hasLevelChanged(player, stats)) {
+			HeartLevels.debug("User's level has changed.");
+			int[] level_ramp = Config.levelRamp.getIntList();
+			if (Config.hardcoreMode.getBoolean()) {
+				System.out.println("Pos below length: " + (stats.currentLrPos < level_ramp.length-1));
+				System.out.println("Pos > 0: " + (stats.currentLrPos > 0));
+				System.out.println("XP < current val: " + (player.experienceLevel < level_ramp[stats.currentLrPos]));
+				while (stats.currentLrPos < level_ramp.length && stats.currentLrPos > 0 && player.experienceLevel < level_ramp[stats.currentLrPos]) {
+					HeartLevels.debug("The player now has too many hearts. Decreasing player health...");
+					double newModifier = updateModifier(player, -2);
+					if (!player.worldObj.isRemote) {
+						PlayerHandler.addOrReloadHealthModifier(player, newModifier);
+					}
+					stats.currentLrPos--;
+					player.setHealth(player.getMaxHealth());
+					HeartLevels.debug("Player's health has decreased.");
+				}
+			}
+			if (max > 0 && player.getMaxHealth() >= max)
+				return;
+			while (stats.currentLrPos < level_ramp.length-1 && player.experienceLevel >= level_ramp[stats.currentLrPos]) {
+				HeartLevels.debug("XP matches next level ramp. Increasing player health...");
+				double newModifier = updateModifier(player, 2);
+				if (!player.worldObj.isRemote) {
+					PlayerHandler.addOrReloadHealthModifier(player, newModifier);
+				}
+				stats.currentLrPos++;
+				player.setHealth(player.getMaxHealth());
+				HeartLevels.debug("Player's health has increased.");
+			}
+		}
 	}
 
 }
