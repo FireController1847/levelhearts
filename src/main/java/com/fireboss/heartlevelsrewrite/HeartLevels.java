@@ -3,8 +3,7 @@ package com.fireboss.heartlevelsrewrite;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fireboss.heartlevelsrewrite.handlers.PlayerEventHandler;
-import com.fireboss.heartlevelsrewrite.handlers.PlayerHandler;
+import com.fireboss.heartlevelsrewrite.handlers.newHandlers.PlayerEventHandler;
 import com.fireboss.heartlevelsrewrite.proxy.ICommonProxy;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -53,7 +52,17 @@ public class HeartLevels {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		MinecraftForge.EVENT_BUS.register(new PlayerHandler());
 		proxy.postInit();
+	}
+
+	// Methods
+	public static void debug(String str) {
+		if (Config.debug.getBoolean())
+			logger.info(str);
+	}
+
+	public static void debugErr(Exception e) {
+		if (Config.debug.getBoolean())
+			logger.error(e);
 	}
 }
