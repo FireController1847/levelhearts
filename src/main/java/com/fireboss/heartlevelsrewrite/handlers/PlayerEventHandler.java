@@ -1,8 +1,7 @@
-package com.fireboss.heartlevelsrewrite.handlers.newHandlers;
+package com.fireboss.heartlevelsrewrite.handlers;
 
 import com.fireboss.heartlevelsrewrite.Config;
 import com.fireboss.heartlevelsrewrite.HeartLevels;
-import com.fireboss.heartlevelsrewrite.handlers.PlayerStats;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;

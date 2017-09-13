@@ -1,7 +1,5 @@
 package com.fireboss.heartlevelsrewrite.handlers;
 
-import com.fireboss.heartlevelsrewrite.handlers.newHandlers.PlayerHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 

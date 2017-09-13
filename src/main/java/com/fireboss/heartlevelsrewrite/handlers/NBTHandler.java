@@ -1,4 +1,4 @@
-package com.fireboss.heartlevelsrewrite.handlers.newHandlers;
+package com.fireboss.heartlevelsrewrite.handlers;
 
 import com.fireboss.heartlevelsrewrite.HeartLevels;
 import com.fireboss.heartlevelsrewrite.Reference;

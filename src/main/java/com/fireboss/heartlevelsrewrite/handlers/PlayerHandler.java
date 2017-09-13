@@ -1,11 +1,10 @@
-package com.fireboss.heartlevelsrewrite.handlers.newHandlers;
+package com.fireboss.heartlevelsrewrite.handlers;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.fireboss.heartlevelsrewrite.Config;
 import com.fireboss.heartlevelsrewrite.HeartLevels;
 import com.fireboss.heartlevelsrewrite.Reference;
-import com.fireboss.heartlevelsrewrite.handlers.PlayerStats;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

@@ -3,7 +3,7 @@ package com.fireboss.heartlevelsrewrite;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.fireboss.heartlevelsrewrite.handlers.newHandlers.PlayerEventHandler;
+import com.fireboss.heartlevelsrewrite.handlers.PlayerEventHandler;
 import com.fireboss.heartlevelsrewrite.proxy.ICommonProxy;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
