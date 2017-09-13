@@ -3,6 +3,7 @@ package com.fireboss.heartlevelsrewrite.handlers;
 import com.fireboss.heartlevelsrewrite.Config;
 import com.fireboss.heartlevelsrewrite.HeartLevels;
 
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,7 +50,10 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		PlayerStats stats = PlayerHandler.getPlayerStats(event.player);
-		PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
+		if (Config.hardcoreMode.getBoolean()) 
+			PlayerHandler.addOrReloadHealthModifier(event.player, stats.start - event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+		else
+			PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
 		event.player.setHealth(event.player.getMaxHealth());
 		NBTTagCompound tags = event.player.getEntityData();
 		NBTTagCompound hlt = NBTHandler.createNewTag(tags);

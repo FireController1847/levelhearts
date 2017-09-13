@@ -18,6 +18,7 @@ public class Config {
 	// Health
 	public static Property startHealth;
 	public static Property maxHealth;
+	public static Property hardcoreMode;
 
 	// GUI
 	public static Property customHud;
@@ -38,6 +39,9 @@ public class Config {
 
 		maxHealth = config.get(healCat, "Maximum Health", -1);
 		maxHealth.comment = "The maximum health a user should have in half-hearts. Default: 1000";
+		
+		hardcoreMode = config.get(healCat, "Hardcore Mode", false);
+		hardcoreMode.comment = "Resets your hearts back to the starting value on death. Default: false.";
 		
 		// GUI Stuff
 		customHud = config.get(guiCat, "Custom HUD", true);
