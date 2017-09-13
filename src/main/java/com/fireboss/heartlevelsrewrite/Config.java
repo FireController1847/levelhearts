@@ -16,6 +16,8 @@ public class Config {
 	public static Property debug;
 
 	// Health
+	public static Property startHealth;
+	public static Property maxHealth;
 
 	// GUI
 	public static Property customHud;
@@ -31,7 +33,12 @@ public class Config {
 		debug.comment = "Set to true to get a bunch of extra output in console. Default: false";
 
 		// Health
+		startHealth = config.get(healCat, "Starting Health", 20);
+		startHealth.comment = "The amount in half-hearts the user should start with. Default: 20";
 
+		maxHealth = config.get(healCat, "Maximum Health", 1000);
+		maxHealth.comment = "The maximum health a user should have in half-hearts. Default: 1000";
+		
 		// GUI Stuff
 		customHud = config.get(guiCat, "Custom HUD", true);
 		customHud.comment = "Enables the mods Custom HUD rendering engine. Disabling this will use Minecraft's default HUD rendering engine. Default: true";

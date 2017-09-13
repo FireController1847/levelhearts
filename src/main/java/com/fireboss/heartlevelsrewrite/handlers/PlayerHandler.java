@@ -3,14 +3,19 @@ package com.fireboss.heartlevelsrewrite.handlers;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.fireboss.heartlevelsrewrite.Config;
 import com.fireboss.heartlevelsrewrite.HeartLevels;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 public class PlayerHandler {
@@ -25,23 +30,64 @@ public class PlayerHandler {
 		IAttributeInstance attrInt = player.getEntityAttribute(SharedMonsterAttributes.maxHealth);
 		attrInt.removeModifier(HeartLevels.health_modifier);
 		attrInt.applyModifier(HeartLevels.health_modifier);
-		System.out.println("Added modifier!");
+		HeartLevels.logger.info("Added health modifier.");
 	}
 
 	// Events
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
-		event.player.setHealth(event.player.getMaxHealth());
+		NBTTagCompound tags = event.player.getEntityData();
+		PlayerStats stats = new PlayerStats();
+		PlayerHandlerHelper.loadPlayerData(event.player, tags, stats);
+		// Config Change
+		if (stats.start != Config.startHealth.getInt()) {
+			PlayerHandlerHelper.updateHealth(event.player, stats, tags);
+		}
+		// Modifier & Save
+		addHealthModifier(event.player, stats.modifier);
+		stats.player = event.player;
+		stats.justLoggedIn = true;
+		playerStats.put(event.player.getUUID(event.player.getGameProfile()).toString(), stats);
+		HeartLevels.logger.info("Player logged in.");
 	}
 
 	@SubscribeEvent
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		addHealthModifier(event.player, 180);
+		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
+		addHealthModifier(event.player, stats.modifier); // TODO: Update modifier to be modifier from stats.
 		event.player.setHealth(event.player.getMaxHealth());
-		System.out.println("Player respawned!");
-		System.out.println("Modifier: " + event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getModifier(HeartLevelsUUID).getAmount());
-		System.out.println("Max Health: " + event.player.getMaxHealth());
-		System.out.println("Health: " + event.player.getHealth());
+		NBTTagCompound tags = event.player.getEntityData();
+		NBTTagCompound hltt = PlayerHandlerHelper.newHeartLevelsTag(tags);
+		NBTTagCompound hlttc = PlayerHandlerHelper.getHeartLevelsCompoundTag(tags);
+		hltt.setInteger("start", stats.start);
+		hltt.setInteger("prevLevel", stats.prevLevel);
+		hlttc.setDouble("modifier", stats.modifier);
+		playerStats.put(event.player.getUUID(event.player.getGameProfile()).toString(), stats);
+		HeartLevels.logger.info("Player respawned.");
+	}
+
+	@SubscribeEvent
+	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		double newMod = 20;
+		try {
+			newMod = event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+					.getModifier(PlayerHandler.HeartLevelsUUID).getAmount() + 10;
+		} catch (Exception e) {
+			HeartLevels.logger.error(e);
+		}
+		PlayerHandlerHelper.savePlayerData(event.player, false);
+		PlayerHandlerHelper.updatePlayerData(event.player);
+		PlayerStats stats = PlayerStats.getPlayerStats(event.player.getUUID(event.player.getGameProfile()).toString());
+		stats.modifier = newMod;
+		event.player.addChatComponentMessage(new ChatComponentText("You've gained a heart!"));
+		stats.needsClientSideUpdate = true;
+		HeartLevels.logger.info("Player switched dimension.");
+	}
+
+	@SubscribeEvent
+	public void onPlayerLogOut(PlayerLoggedOutEvent event) {
+		PlayerHandlerHelper.savePlayerData(event.player, true);
+		HeartLevels.logger.info("Player logged out.");
 	}
 
 }

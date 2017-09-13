@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -192,7 +193,6 @@ public class HeartLevelsHUD extends Gui {
 					mc.getTextureManager().bindTexture(Gui.icons);
 				}
 			}
-
 			mc.mcProfiler.endSection();
 		}
 	}
