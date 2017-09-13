@@ -36,7 +36,7 @@ public class Config {
 		startHealth = config.get(healCat, "Starting Health", 20);
 		startHealth.comment = "The amount in half-hearts the user should start with. Default: 20";
 
-		maxHealth = config.get(healCat, "Maximum Health", 1000);
+		maxHealth = config.get(healCat, "Maximum Health", -1);
 		maxHealth.comment = "The maximum health a user should have in half-hearts. Default: 1000";
 		
 		// GUI Stuff
