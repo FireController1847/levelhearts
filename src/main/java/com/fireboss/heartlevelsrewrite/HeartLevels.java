@@ -3,6 +3,7 @@ package com.fireboss.heartlevelsrewrite;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fireboss.heartlevelsrewrite.handlers.ItemHandler;
 import com.fireboss.heartlevelsrewrite.handlers.PlayerEventHandler;
 import com.fireboss.heartlevelsrewrite.proxy.ICommonProxy;
 
@@ -41,6 +42,7 @@ public class HeartLevels {
 		Config.config.load();
 		Config.setupConfig();
 		Config.verifyConfig();
+		ItemHandler.createItems();
 		proxy.preInit();
 	}
 
