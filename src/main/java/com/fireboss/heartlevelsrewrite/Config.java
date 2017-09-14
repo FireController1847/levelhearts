@@ -20,6 +20,7 @@ public class Config {
 	public static Property maxHealth;
 	public static Property levelRamp;
 	public static Property hardcoreMode;
+	public static Property expMultiplier;
 
 	// GUI
 	public static Property customHud;
@@ -48,6 +49,10 @@ public class Config {
 		hardcoreMode = config.get(healCat, "Hardcore Mode", false);
 		hardcoreMode.comment = "Resets your hearts back to the starting value on death. Default: false.";
 
+		expMultiplier = config.get(healCat, "XP Multiplier", 1.0);
+		expMultiplier.comment = "Multplies the value of XP by this value. Default: 1.0";
+		
+		
 		// GUI Stuff
 		customHud = config.get(guiCat, "Custom HUD", true);
 		customHud.comment = "Enables the mods Custom HUD rendering engine. Disabling this will use Minecraft's default HUD rendering engine. Default: true";

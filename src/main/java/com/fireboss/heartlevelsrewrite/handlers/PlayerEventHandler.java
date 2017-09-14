@@ -5,6 +5,7 @@ import com.fireboss.heartlevelsrewrite.HeartLevels;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -21,8 +22,8 @@ public class PlayerEventHandler {
 		if (stats.needsClientSideUpdate) {
 			PlayerHandler.savePlayerData(event.player, false);
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
-			event.player.setHealth(event.player.getHealth()+1); // Force the client to update
-			event.player.setHealth(event.player.getHealth()-1); // the hearts
+			event.player.setHealth(event.player.getHealth() + 1); // Force the client to update
+			event.player.setHealth(event.player.getHealth() - 1); // the hearts
 			stats.needsClientSideUpdate = false;
 		}
 		if (stats.justLoggedIn && stats.outHealth != 0) {
@@ -53,7 +54,8 @@ public class PlayerEventHandler {
 		PlayerStats stats = PlayerHandler.getPlayerStats(event.player);
 		if (Config.hardcoreMode.getBoolean()) {
 			stats.currentLrPos = 0;
-			PlayerHandler.addOrReloadHealthModifier(event.player, stats.start - event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
+			PlayerHandler.addOrReloadHealthModifier(event.player,
+					stats.start - event.player.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue());
 		} else {
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
 		}
@@ -82,6 +84,11 @@ public class PlayerEventHandler {
 	public void onPlayerLogout(PlayerLoggedOutEvent event) {
 		PlayerHandler.savePlayerData(event.player, true);
 		HeartLevels.debug("Player logged out.");
+	}
+
+	@SubscribeEvent
+	public void onPlayerPickupXP(PlayerPickupXpEvent e) {
+		e.orb.xpValue *= Config.expMultiplier.getDouble();
 	}
 
 }
