@@ -26,16 +26,7 @@ public class PlayerHandler {
 	}
 
 	public static double calcDefHealth(EntityPlayer player, PlayerStats stats) {
-		// Level Ramp
 		int rpg = 0;
-		int[] levelRamp = Config.levelRamp.getIntList();
-		for (int i = 0; i < levelRamp.length; i++) {
-			if (player.experienceLevel >= levelRamp[i]) {
-				rpg += 2;
-			} else {
-				break;
-			}
-		}
 
 		// Max Check
 		int max = Config.maxHealth.getInt();
@@ -43,10 +34,7 @@ public class PlayerHandler {
 			rpg = max;
 		}
 
-		// Heart Containers
-		double containers = stats.heartContainers * 2;
-
-		return stats.start + rpg + containers;
+		return stats.start + rpg;
 	}
 
 	public static void updatePlayerHealth(EntityPlayer player, NBTTagCompound tags, PlayerStats stats) {
@@ -79,7 +67,6 @@ public class PlayerHandler {
 		stats.currentLrPos = hlt.getInteger("currentLrPos");
 		stats.prevLevel = hlt.getInteger("prevLevel");
 		stats.modifier = hlt.getDouble("modifier");
-		stats.heartContainers = hlt.getInteger("heartContainers");
 	}
 
 	public static void savePlayerData(EntityPlayer player, boolean loggedOut) {
@@ -91,7 +78,6 @@ public class PlayerHandler {
 		hlt.setInteger("currentLrPos", stats.currentLrPos);
 		hlt.setInteger("prevLevel", stats.prevLevel);
 		hlt.setDouble("modifier", stats.modifier);
-		hlt.setInteger("heartContainers", stats.heartContainers);
 		if (!loggedOut)
 			return;
 	}
@@ -135,11 +121,10 @@ public class PlayerHandler {
 			HeartLevels.debug("User's level has changed.");
 			int[] level_ramp = Config.levelRamp.getIntList();
 			if (Config.hardcoreMode.getBoolean()) {
-				System.out.println("Pos below length: " + (stats.currentLrPos < level_ramp.length - 1));
+				System.out.println("Pos below length: " + (stats.currentLrPos < level_ramp.length-1));
 				System.out.println("Pos > 0: " + (stats.currentLrPos > 0));
 				System.out.println("XP < current val: " + (player.experienceLevel < level_ramp[stats.currentLrPos]));
-				while (stats.currentLrPos < level_ramp.length && stats.currentLrPos > 0
-						&& player.experienceLevel < level_ramp[stats.currentLrPos]) {
+				while (stats.currentLrPos < level_ramp.length && stats.currentLrPos > 0 && player.experienceLevel < level_ramp[stats.currentLrPos]) {
 					HeartLevels.debug("The player now has too many hearts. Decreasing player health...");
 					double newModifier = updateModifier(player, -2);
 					if (!player.worldObj.isRemote) {
@@ -152,8 +137,7 @@ public class PlayerHandler {
 			}
 			if (max > 0 && player.getMaxHealth() >= max)
 				return;
-			while (stats.currentLrPos < level_ramp.length
-					&& player.experienceLevel >= level_ramp[stats.currentLrPos]) {
+			while (stats.currentLrPos < level_ramp.length-1 && player.experienceLevel >= level_ramp[stats.currentLrPos]) {
 				HeartLevels.debug("XP matches next level ramp. Increasing player health...");
 				double newModifier = updateModifier(player, 2);
 				if (!player.worldObj.isRemote) {

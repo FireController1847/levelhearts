@@ -22,6 +22,8 @@ public class PlayerEventHandler {
 		if (stats.needsClientSideUpdate) {
 			PlayerHandler.savePlayerData(event.player, false);
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.modifier);
+			event.player.setHealth(event.player.getHealth() + 1); // Force the client to update
+			event.player.setHealth(event.player.getHealth() - 1); // the hearts
 			stats.needsClientSideUpdate = false;
 		}
 		if (stats.justLoggedIn && stats.outHealth != 0) {

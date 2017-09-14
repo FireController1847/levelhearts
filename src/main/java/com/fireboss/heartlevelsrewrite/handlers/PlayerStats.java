@@ -19,7 +19,6 @@ public class PlayerStats {
 	public double modifier;
 	public float outHealth;
 	public int currentLrPos;
-	public int heartContainers;
 	public boolean justLoggedIn;
 	public boolean needsClientSideUpdate = false;
 
