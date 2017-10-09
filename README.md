@@ -4,10 +4,10 @@ Heart Levels [![Discord](https://img.shields.io/discord/315928463393423362.svg?l
 The home of the Official Updated Remake for More Health Enchanted!
 
 ## Downloads
-When a release is ready, it should be put on ![CurseForge](https://minecraft.curseforge.com/projects/heart-levels)!
+When a release is ready, it should be put on [CurseForge](https://minecraft.curseforge.com/projects/heart-levels)
 
 ## Chat
-Feel free to chat with us on ![Discord](https://discord.gg/TJpmzTn)!
+Feel free to chat with us on [Discord](https://discord.gg/TJpmzTn)
 
 ## Code
 All versions are under their own branch, making it easy to find which version is for which mod version.
@@ -17,7 +17,7 @@ All versions are under their own branch, making it easy to find which version is
 Do not redistribute, publish, or credit this mod as your own in any way shape or form.
 
 #### Modpacks
-We have pretty much the same permissions as ![JourneyMap's Modpack Requirements](http://journeymap.info/Modpack_FAQ).
+Feel free to include it in your modpack!
 
 #### License
 This mod follows the Minecraft EULA and is protected by the Minecraft EULA at all times.
