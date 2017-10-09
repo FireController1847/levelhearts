@@ -4,7 +4,7 @@ LevelHearts [![Discord](https://img.shields.io/discord/315928463393423362.svg?la
 The home of the Official Updated Remake for More Health Enchanted!
 
 ## Downloads
-When a release is ready, it should be put on [CurseForge](https://minecraft.curseforge.com/projects/heart-levels)
+When a release is ready, it should be put on [CurseForge](https://minecraft.curseforge.com/projects/levelhearts)
 
 ## Chat
 Feel free to chat with us on [Discord](https://discord.gg/TJpmzTn)
