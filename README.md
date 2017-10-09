@@ -1,4 +1,4 @@
-Heart Levels [![Discord](https://img.shields.io/discord/315928463393423362.svg?label=Chat&colorB=2D2D2D&colorA=E04E14)](https://discord.gg/TJpmzTn) ![](http://cf.way2muchnoise.eu/full_heart-levels_Downloads.svg) ![](http://cf.way2muchnoise.eu/versions/heart-levels.svg)
+LevelHearts [![Discord](https://img.shields.io/discord/315928463393423362.svg?label=Chat&colorB=2D2D2D&colorA=E04E14)](https://discord.gg/TJpmzTn) ![](http://cf.way2muchnoise.eu/full_levelhearts_Downloads.svg) ![](http://cf.way2muchnoise.eu/versions/levelhearts.svg)
 =============
 <img width=100px src="https://media-elerium.cursecdn.com/avatars/109/257/636378365565580241.png"/>
 The home of the Official Updated Remake for More Health Enchanted!
