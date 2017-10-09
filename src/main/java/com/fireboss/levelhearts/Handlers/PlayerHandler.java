@@ -81,6 +81,9 @@ public class PlayerHandler {
 			return;
 		}
 		NBTTagCompound lht = NBTHandler.getTag(player.getEntityData(), false);
+		if (lht == null) {
+			return;
+		}
 		lht.setInteger("startingHealth", stats.startingHealth);
 		lht.setInteger("currentLevelPosition", stats.currentLevelPosition);
 		lht.setInteger("previousExperienceLevel", stats.previousExperienceLevel);

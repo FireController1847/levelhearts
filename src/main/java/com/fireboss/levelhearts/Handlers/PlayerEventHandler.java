@@ -21,7 +21,7 @@ public class PlayerEventHandler {
 			PlayerHandler.addOrReloadHealthModifier(event.player, stats.healthModifier);
 			stats.needsClientSideUpdate = false;
 		}
-		if (stats.playerJustLoggedIn) {
+		if (stats.playerJustLoggedIn && stats.loggedOutHealth != 0) {
 			LevelHearts.debug("Logged out health: " + stats.loggedOutHealth);
 			event.player.setHealth(stats.loggedOutHealth);
 			stats.playerJustLoggedIn = false;
